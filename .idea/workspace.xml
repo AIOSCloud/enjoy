@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="af0d4a69-360b-42dd-99bb-e6d275333dcc" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+        <option value="Enum" />
+      </list>
+    </option>
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="1" />
+  </component>
+  <component name="ProjectId" id="1Yv2puzHRKjkAgXoAnbkovZeFya" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+    <option name="showMembers" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/UClient/src/main/resources" />
+    <property name="project.structure.last.edited" value="Problems" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\迅雷下载\enjoy_word\UClient\src\main\resources" />
+    </key>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="af0d4a69-360b-42dd-99bb-e6d275333dcc" name="Default Changelist" comment="" />
+      <created>1583808933907</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1583808933907</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="275" y="21" key="#Project_Structure" timestamp="1583809747910">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="275" y="21" key="#Project_Structure/0.0.1366.728@0.0.1366.728" timestamp="1583809747910" />
+    <state x="929" y="87" key="#com.intellij.ide.util.MemberChooser" timestamp="1583809186973">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="929" y="87" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728@0.0.1366.728" timestamp="1583809186973" />
+    <state x="529" y="251" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" timestamp="1583810279470">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="529" y="251" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.0.1366.728@0.0.1366.728" timestamp="1583810279470" />
+    <state x="213" y="17" key="Maven.ArtifactSearchDialog" timestamp="1583810937760">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="213" y="17" key="Maven.ArtifactSearchDialog/0.0.1366.728@0.0.1366.728" timestamp="1583810937760" />
+    <state x="184" y="0" key="SettingsEditor" timestamp="1583812645396">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="184" y="0" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1583812645396" />
+    <state x="363" y="186" key="com.intellij.ide.util.TipDialog" timestamp="1583810443757">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="363" y="186" key="com.intellij.ide.util.TipDialog/0.0.1366.728@0.0.1366.728" timestamp="1583810443757" />
+    <state x="57" y="57" key="new project wizard" timestamp="1583809793642">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="57" y="57" key="new project wizard/0.0.1366.728@0.0.1366.728" timestamp="1583809793642" />
+    <state x="780" y="164" key="run.anything.popup" timestamp="1583809298296">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="780" y="164" key="run.anything.popup/0.0.1366.728@0.0.1366.728" timestamp="1583809298296" />
+    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1583810781637">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1583810781637" />
+  </component>
+</project>
