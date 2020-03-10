@@ -2,17 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="af0d4a69-360b-42dd-99bb-e6d275333dcc" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_all_4_1_45_Final.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Server/src/main/java/e/word/net/ChannelSupervise.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Server/src/main/java/e/word/net/NioWebScoketHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Server/src/main/java/e/word/net/NioWebSocketChannelInitializer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Common/src/main/java/e/word/net/model/Card.java" beforeDir="false" afterPath="$PROJECT_DIR$/Common/src/main/java/e/word/net/model/Card.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/Server.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Server/Server.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Server/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Server/src/main/java/e/word/net/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/java/e/word/net/Server.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/java/e/wrod/net/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/java/e/wrod/net/Client.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -100,7 +91,19 @@
       <option name="presentableId" value="Default" />
       <updated>1583808933907</updated>
     </task>
+    <task id="LOCAL-00001" summary="1.服务websocker框架完成&#10;2.客户端大致框架完成">
+      <created>1583828598530</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1583828598530</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="1.服务websocker框架完成&#10;2.客户端大致框架完成" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.服务websocker框架完成&#10;2.客户端大致框架完成" />
   </component>
   <component name="WindowStateProjectService">
     <state x="275" y="21" key="#Project_Structure" timestamp="1583809747910">
@@ -115,10 +118,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="529" y="251" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.0.1366.728@0.0.1366.728" timestamp="1583810279470" />
-    <state x="354" y="0" key="CommitChangelistDialog2" timestamp="1583822494352">
+    <state x="354" y="0" key="CommitChangelistDialog2" timestamp="1583828593771">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="354" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1583822494352" />
+    <state x="354" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1583828593771" />
     <state x="463" y="117" key="FileChooserDialogImpl" timestamp="1583821721458">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -147,6 +150,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="184" y="0" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1583820983051" />
+    <state x="275" y="95" key="Vcs.Push.Dialog.v2" timestamp="1583828610197">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="275" y="95" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1583828610197" />
     <state x="363" y="186" key="com.intellij.ide.util.TipDialog" timestamp="1583810443757">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
