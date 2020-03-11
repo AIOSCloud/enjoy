@@ -1,4 +1,4 @@
-package e.wrod.net.panel;
+package e.wrod.net.page;
 
 import e.wrod.net.Client;
 
@@ -10,12 +10,12 @@ import java.awt.*;
 /**
  * 首页界面
  */
-public class FirstPagePanel extends JPanel {
+public class HomePage extends JPanel {
     private Image image;
     private String music;
     private AudioClip audio;
 
-    public FirstPagePanel(Image image, String music) {
+    public HomePage(Image image, String music) {
         this.image = image;
         this.music = music;
         audio = Applet.newAudioClip(Client.class.getResource("/music/9621.wav"));

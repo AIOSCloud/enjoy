@@ -2,143 +2,31 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="af0d4a69-360b-42dd-99bb-e6d275333dcc" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/UClient/src/main/java/e/wrod/net/panel/FirstPagePanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/UClient/src/main/java/e/wrod/net/panel/RegistPagePanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/UClient/src/main/java/e/wrod/net/panel/RoomPagePanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/UClient/src/main/java/e/wrod/net/panel/UserInfoPanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/UClient/src/main/java/e/wrod/net/utils/MusicPlayer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/chat/first.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/chat/你是妹妹还是哥哥.gif" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/chat/你的牌打得太好了.gif" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/chat/决战到天亮不要走.gif" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/chat/又输了.gif" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/chat/叫地主.gif" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/chat/大你.gif" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/chat/失败.gif" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/chat/就剩一张牌了.gif" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/chat/快点吧我等到花儿都谢了.gif" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/chat/我们交个朋友吧.gif" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/chat/我有炸我最帅.gif" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/chat/抢地主.gif" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/chat/胜利.gif" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/chat/要不起.gif" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/chat/过.gif" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/UClient/src/main/resources/music/9621.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_annotations_2_9_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_core_2_9_7.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_databind_2_9_7.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__log4j_log4j_1_2_17.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_commons_commons_lang3_3_9.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UClient/src/main/java/e/wrod/net/model/User.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UClient/src/main/java/e/wrod/net/view/Home.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UClient/src/main/java/e/wrod/net/view/Login.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UClient/src/main/java/e/wrod/net/view/Register.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UClient/src/main/resources/image/clear.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UClient/src/main/resources/image/denglu.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UClient/src/main/resources/image/mm.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UClient/src/main/resources/image/qq.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UClient/src/main/resources/image/quxiao.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UClient/src/main/resources/image/tou.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UClient/src/main/resources/image/xiangdao.gif" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UClient/UClient.iml" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/UClient.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UClient/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/UClient/src/main/java/e/wrod/net/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/java/e/wrod/net/Client.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/1-1.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/1-1.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/1-10.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/1-10.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/1-11.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/1-11.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/1-12.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/1-12.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/1-13.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/1-13.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/1-2.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/1-2.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/1-3.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/1-3.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/1-4.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/1-4.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/1-5.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/1-5.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/1-6.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/1-6.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/1-7.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/1-7.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/1-8.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/1-8.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/1-9.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/1-9.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/2-1.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/2-1.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/2-10.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/2-10.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/2-11.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/2-11.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/2-12.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/2-12.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/2-13.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/2-13.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/2-2.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/2-2.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/2-3.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/2-3.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/2-4.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/2-4.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/2-5.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/2-5.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/2-6.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/2-6.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/2-7.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/2-7.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/2-8.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/2-8.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/2-9.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/2-9.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/3-1.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/3-1.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/3-10.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/3-10.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/3-11.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/3-11.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/3-12.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/3-12.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/3-13.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/3-13.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/3-2.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/3-2.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/3-3.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/3-3.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/3-4.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/3-4.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/3-5.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/3-5.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/3-6.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/3-6.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/3-7.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/3-7.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/3-8.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/3-8.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/3-9.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/3-9.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/4-1.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/4-1.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/4-10.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/4-10.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/4-11.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/4-11.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/4-12.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/4-12.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/4-13.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/4-13.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/4-2.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/4-2.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/4-3.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/4-3.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/4-4.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/4-4.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/4-5.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/4-5.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/4-6.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/4-6.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/4-7.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/4-7.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/4-8.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/4-8.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/4-9.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/4-9.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/5-1.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/5-1.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/5-2.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/5-2.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/dizhu.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/dizhu.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/src/main/resources/images/rear.gif" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/resources/images/card/rear.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/1-1.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/1-10.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/1-11.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/1-12.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/1-13.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/1-2.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/1-3.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/1-4.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/1-5.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/1-6.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/1-7.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/1-8.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/1-9.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/2-1.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/2-10.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/2-11.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/2-12.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/2-13.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/2-2.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/2-3.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/2-4.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/2-5.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/2-6.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/2-7.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/2-8.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/2-9.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/3-1.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/3-10.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/3-11.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/3-12.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/3-13.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/3-2.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/3-3.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/3-4.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/3-5.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/3-6.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/3-7.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/3-8.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/3-9.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/4-1.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/4-10.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/4-11.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/4-12.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/4-13.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/4-2.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/4-3.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/4-4.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/4-5.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/4-6.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/4-7.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/4-8.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/4-9.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/5-1.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/5-2.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/dizhu.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UClient/target/classes/images/rear.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/UClient/src/main/java/e/wrod/net/panel/FirstPagePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/java/e/wrod/net/page/HomePage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UClient/src/main/java/e/wrod/net/panel/RegistPagePanel.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/UClient/src/main/java/e/wrod/net/panel/RoomPagePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/UClient/src/main/java/e/wrod/net/page/RoomPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UClient/src/main/java/e/wrod/net/panel/UserInfoPanel.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -184,45 +72,32 @@
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/UClient/src/main/resources/music" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/UClient/src/main/resources" />
     <property name="project.structure.last.edited" value="Problems" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\迅雷下载\enjoy_word\UClient\src\main\resources\images\chat" />
-      <recent name="D:\迅雷下载\enjoy_word\UClient\src\main\resources\images\card" />
-    </key>
     <key name="CreateClassDialog.RecentsKey">
       <recent name="e.word.net" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\迅雷下载\enjoy_word\UClient\src\main\resources\music" />
       <recent name="D:\迅雷下载\enjoy_word\UClient\src\main\resources" />
+      <recent name="D:\迅雷下载\enjoy_word\UClient\src\main\resources\music" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\迅雷下载\enjoy_word\UClient\src\main\resources\images\chat" />
+      <recent name="D:\迅雷下载\enjoy_word\UClient\src\main\resources\images\card" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Client">
+  <component name="RunManager">
     <configuration name="Client" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="e.wrod.net.Client" />
       <module name="UClient" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="e.wrod.net.panel.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="MusicPlayer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="e.wrod.net.utils.MusicPlayer" />
-      <module name="UClient" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="e.wrod.net.utils.*" />
+          <option name="PATTERN" value="e.wrod.net.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -233,7 +108,6 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.Client" />
-        <item itemvalue="Application.MusicPlayer" />
       </list>
     </recent_temporary>
   </component>
@@ -262,67 +136,99 @@
       <option name="project" value="LOCAL" />
       <updated>1583828842504</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="1.服务websocker框架完成&#10;2.客户端大致框架完成&#10;3.客户端设计">
+      <created>1583839749779</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1583839749779</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="1.服务websocker框架完成&#10;2.客户端大致框架完成" />
-    <option name="LAST_COMMIT_MESSAGE" value="1.服务websocker框架完成&#10;2.客户端大致框架完成" />
+    <MESSAGE value="1.服务websocker框架完成&#10;2.客户端大致框架完成&#10;3.客户端设计" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.服务websocker框架完成&#10;2.客户端大致框架完成&#10;3.客户端设计" />
   </component>
   <component name="WindowStateProjectService">
     <state x="275" y="21" key="#Project_Structure" timestamp="1583809747910">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="275" y="21" key="#Project_Structure/0.0.1366.728@0.0.1366.728" timestamp="1583809747910" />
+    <state x="137" y="17" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1583890635672">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="137" y="17" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728@0.0.1366.728" timestamp="1583890635672" />
     <state x="462" y="197" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1583833925823">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="462" y="197" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1366.728@0.0.1366.728" timestamp="1583833925823" />
-    <state x="929" y="87" key="#com.intellij.ide.util.MemberChooser" timestamp="1583824491805">
+    <state x="929" y="87" key="#com.intellij.ide.util.MemberChooser" timestamp="1583890569183">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="929" y="87" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728@0.0.1366.728" timestamp="1583824491805" />
+    <state x="929" y="87" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728@0.0.1366.728" timestamp="1583890569183" />
     <state x="529" y="251" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" timestamp="1583810279470">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="529" y="251" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.0.1366.728@0.0.1366.728" timestamp="1583810279470" />
+    <state x="253" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1583890216238">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="253" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1366.728@0.0.1366.728" timestamp="1583890216238" />
     <state x="413" y="109" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1583831797526">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="413" y="109" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1366.728@0.0.1366.728" timestamp="1583831797526" />
-    <state x="354" y="0" key="CommitChangelistDialog2" timestamp="1583828840355">
+    <state x="354" y="0" key="CommitChangelistDialog2" timestamp="1583894299097">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="354" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1583828840355" />
+    <state x="354" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1583894299097" />
     <state x="463" y="117" key="FileChooserDialogImpl" timestamp="1583821721458">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="463" y="117" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1583821721458" />
-    <state width="1286" height="2" key="GridCell.Tab.0.bottom" timestamp="1583834942331">
+    <state width="1322" height="206" key="GridCell.Tab.0.bottom" timestamp="1583894300613">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1286" height="2" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1583834942331" />
-    <state width="1286" height="2" key="GridCell.Tab.0.center" timestamp="1583834942330">
+    <state width="1322" height="206" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1583894300613" />
+    <state width="1322" height="206" key="GridCell.Tab.0.center" timestamp="1583894300609">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1286" height="2" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1583834942330" />
-    <state width="1286" height="2" key="GridCell.Tab.0.left" timestamp="1583834942330">
+    <state width="1322" height="206" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1583894300609" />
+    <state width="1322" height="206" key="GridCell.Tab.0.left" timestamp="1583894300609">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1286" height="2" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1583834942330" />
-    <state width="1286" height="2" key="GridCell.Tab.0.right" timestamp="1583834942330">
+    <state width="1322" height="206" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1583894300609" />
+    <state width="1322" height="206" key="GridCell.Tab.0.right" timestamp="1583894300609">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1286" height="2" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1583834942330" />
+    <state width="1322" height="206" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1583894300609" />
+    <state width="1286" height="210" key="GridCell.Tab.1.bottom" timestamp="1583855627769">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1286" height="210" key="GridCell.Tab.1.bottom/0.0.1366.728@0.0.1366.728" timestamp="1583855627769" />
+    <state width="1286" height="210" key="GridCell.Tab.1.center" timestamp="1583855627768">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1286" height="210" key="GridCell.Tab.1.center/0.0.1366.728@0.0.1366.728" timestamp="1583855627768" />
+    <state width="1286" height="210" key="GridCell.Tab.1.left" timestamp="1583855627768">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1286" height="210" key="GridCell.Tab.1.left/0.0.1366.728@0.0.1366.728" timestamp="1583855627768" />
+    <state width="1286" height="210" key="GridCell.Tab.1.right" timestamp="1583855627769">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1286" height="210" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1583855627769" />
     <state x="213" y="17" key="Maven.ArtifactSearchDialog" timestamp="1583810937760">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="213" y="17" key="Maven.ArtifactSearchDialog/0.0.1366.728@0.0.1366.728" timestamp="1583810937760" />
-    <state x="184" y="0" key="SettingsEditor" timestamp="1583833461559">
+    <state x="184" y="0" key="SettingsEditor" timestamp="1583840579866">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="184" y="0" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1583833461559" />
+    <state x="184" y="0" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1583840579866" />
     <state x="275" y="95" key="Vcs.Push.Dialog.v2" timestamp="1583828847761">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -339,18 +245,18 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="549" y="283" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1366.728@0.0.1366.728" timestamp="1583819339762" />
-    <state x="57" y="57" key="new project wizard" timestamp="1583809793642">
+    <state x="115" y="97" key="new project wizard" timestamp="1583855620360">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="57" y="57" key="new project wizard/0.0.1366.728@0.0.1366.728" timestamp="1583809793642" />
-    <state x="780" y="164" key="run.anything.popup" timestamp="1583827410293">
+    <state x="115" y="97" key="new project wizard/0.0.1366.728@0.0.1366.728" timestamp="1583855620360" />
+    <state x="780" y="164" key="run.anything.popup" timestamp="1583847040713">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="780" y="164" key="run.anything.popup/0.0.1366.728@0.0.1366.728" timestamp="1583827410293" />
-    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1583832557257">
+    <state x="780" y="164" key="run.anything.popup/0.0.1366.728@0.0.1366.728" timestamp="1583847040713" />
+    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1583891915944">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1583832557257" />
+    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1583891915944" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
