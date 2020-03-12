@@ -1,16 +1,17 @@
 package e.wrod.net.view;
 
-import e.wrod.net.Client;
+import e.wrod.net.model.User;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 
-public class Login extends JFrame implements ActionListener {
+/**
+ * 登录首页
+ */
+public class LoginPage extends JFrame implements ActionListener {
     //定义北部需要的组件
 
     JLabel jbl1;
@@ -30,7 +31,7 @@ public class Login extends JFrame implements ActionListener {
     JPanel jp1;
     JButton jp1_jb1, jp1_jb2, jp1_jb3;
 
-    public Login() {
+    public LoginPage() {
         //处理北部
         //jbl1 = new JLabel(new ImageIcon(ClassLoader.getSystemResource("image/tou.gif")));
         jbl1 = new JLabel("互联世界，世界互联", JLabel.CENTER);
@@ -87,7 +88,10 @@ public class Login extends JFrame implements ActionListener {
         this.add(jtp, "Center");
         //..把jp1放在南部
         this.add(jp1, "South");
+        this.setTitle("互联世界");
         this.setSize(350, 240);
+        setLocationRelativeTo(getOwner());
+        setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
     }
@@ -98,6 +102,18 @@ public class Login extends JFrame implements ActionListener {
             //清楚账号密码
             jp2_jtf.setText("");
             jp2_jpf.setText("");
+        }
+        if (e.getSource() == jp1_jb1) {
+            //登录  校验账号
+            if (StringUtils.isEmpty(jp2_jtf.getText())) {
+                JOptionPane.showMessageDialog(this, "请输入账号");
+            } else {
+                User user = new User();
+                user.setUserName(jp2_jtf.getText());
+                JOptionPane.showMessageDialog(this, "登录成功，你好:" + user.getUserName());
+                this.dispose();
+                new HomePage(user);
+            }
         }
     }
 }

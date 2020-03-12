@@ -1,6 +1,6 @@
-package e.wrod.net.page;
+package e.wrod.net.component;
 
-import e.wrod.net.Client;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import java.applet.Applet;
@@ -10,15 +10,15 @@ import java.awt.*;
 /**
  * 首页界面
  */
-public class HomePage extends JPanel {
+public class MusicPanel extends JPanel {
     private Image image;
-    private String music;
     private AudioClip audio;
 
-    public HomePage(Image image, String music) {
-        this.image = image;
-        this.music = music;
-        audio = Applet.newAudioClip(Client.class.getResource("/music/9621.wav"));
+    public MusicPanel(String img, String music) {
+        this.image = Toolkit.getDefaultToolkit().createImage(ClassLoader.getSystemResource(img));
+        if (StringUtils.isNotEmpty(music)) {
+            audio = Applet.newAudioClip(ClassLoader.getSystemResource(music));
+        }
     }
 
     public void playMusic() {
