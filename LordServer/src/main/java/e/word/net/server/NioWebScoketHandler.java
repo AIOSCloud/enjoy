@@ -1,17 +1,19 @@
-package e.word.net;
+package e.word.net.server;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
+import e.word.net.model.Message;
+import e.word.net.model.User;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
-import io.netty.handler.codec.http.DefaultFullHttpRequest;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.websocketx.*;
 import io.netty.util.CharsetUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
-import javax.swing.*;
-import java.nio.charset.Charset;
 import java.util.Date;
 
 import static io.netty.handler.codec.http.HttpUtil.isKeepAlive;
@@ -26,7 +28,8 @@ public class NioWebScoketHandler extends SimpleChannelInboundHandler<Object> {
         if (msg instanceof FullHttpRequest) {
             //以http请求的形式接入，但是走的是websocket
             handleHttpRequest(ctx, (FullHttpRequest) msg);
-        } else if (msg instanceof WebSocketFrame) {
+        } else if (msg instanceof
+                WebSocketFrame) {
             // 处理websocket客户端的消息
             handlerWebSocketFrame(ctx, (WebSocketFrame) msg);
         }
@@ -36,6 +39,7 @@ public class NioWebScoketHandler extends SimpleChannelInboundHandler<Object> {
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         //添加链接
         logger.debug("客户端加入链接:" + ctx.channel());
+        System.out.println("客户端加入链接:\" + ctx.channel()");
         ChannelSupervise.addChannel(ctx.channel());
     }
 
@@ -66,14 +70,21 @@ public class NioWebScoketHandler extends SimpleChannelInboundHandler<Object> {
         if (!(frame instanceof TextWebSocketFrame)) {
             logger.debug("本例仅支持文本消息，暂不支持二进制消息");
             throw new UnsupportedOperationException(String.format("%s frame types not supported", frame.getClass()));
+        } else {
+            String request = ((TextWebSocketFrame) frame).text();
+            logger.debug("服务端收到:" + request);
+            // TODO: 2020/3/12  对客户端收到的消息进行处理
+            Message message = JSON.parseObject(request, new TypeReference<Message>() {
+            }.getType());
+            //斗地主
+            if (message.getMainType() == 1 && message.getExtType() == 0) {
+                // TODO: 2020/3/12  用户登录
+                User user = message.getUser();
+                if (StringUtils.isNotEmpty(user.getUserName())) {
+                    // TODO: 2020/3/12 用户信息校验
+                }
+            }
         }
-        String request = ((TextWebSocketFrame) frame).text();
-        logger.debug("服务端收到:" + request);
-        TextWebSocketFrame tws = new TextWebSocketFrame(new Date().toString() + ctx.channel().id() + ":" + request);
-        //群发
-        ChannelSupervise.send2All(tws);
-        //返回 谁能发给谁
-        //ctx.channel().writeAndFlush(tws);
     }
 
     //唯一的一次HTTP请求

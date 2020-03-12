@@ -4,7 +4,11 @@ import lombok.Data;
 
 @Data
 public class Card {
-    private String color; //扑克花色
-    private String number;// 扑克数字
-    private
+    int color;//片面花色
+    int number;//牌面数字
+
+    public Card(int color, int number) {
+        this.color = color;
+        this.number = number;
+    }
 }

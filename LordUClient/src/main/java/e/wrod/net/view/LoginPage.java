@@ -1,6 +1,9 @@
 package e.wrod.net.view;
 
+import com.alibaba.fastjson.JSON;
+import e.wrod.net.model.Message;
 import e.wrod.net.model.User;
+import e.wrod.net.utils.MyWebSocketClient;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
@@ -15,7 +18,6 @@ public class LoginPage extends JFrame implements ActionListener {
     //定义北部需要的组件
 
     JLabel jbl1;
-
     //定义中部需要的组件
     //.中部有三个JPanel,有一个叫选项卡窗口管理
     JTabbedPane jtp;
@@ -25,13 +27,13 @@ public class LoginPage extends JFrame implements ActionListener {
     JTextField jp2_jtf;
     JPasswordField jp2_jpf;
     JCheckBox jp2_jcb1, jp2_jcb2;
-
-
     //定义南部需要的组件
     JPanel jp1;
     JButton jp1_jb1, jp1_jb2, jp1_jb3;
+    MyWebSocketClient ws;
 
-    public LoginPage() {
+    public LoginPage(MyWebSocketClient ws) {
+        this.ws = ws;
         //处理北部
         //jbl1 = new JLabel(new ImageIcon(ClassLoader.getSystemResource("image/tou.gif")));
         jbl1 = new JLabel("互联世界，世界互联", JLabel.CENTER);
@@ -111,6 +113,10 @@ public class LoginPage extends JFrame implements ActionListener {
                 User user = new User();
                 user.setUserName(jp2_jtf.getText());
                 JOptionPane.showMessageDialog(this, "登录成功，你好:" + user.getUserName());
+                Message message = new Message();
+                message.setExtType(1);
+                message.setExtType(1);
+                ws.send(JSON.toJSONString(message));
                 this.dispose();
                 new HomePage(user);
             }
