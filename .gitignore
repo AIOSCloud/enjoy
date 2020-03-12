@@ -23,7 +23,7 @@ dist/
 nbdist/
 .nb-gradle/
 
-dea
+.idea
 *.iml
 .vscode
 /node_modules/
