@@ -1,18 +1,18 @@
 package e.wrod.net.component;
 
+import e.wrod.net.common.Common;
 import e.wrod.net.model.Card;
-import e.wrod.net.view.RoomPage;
+import e.wrod.net.view.OnlinePage;
 import lombok.Data;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 @Data
 public class JCard extends JLabel implements MouseListener {
-    RoomPage room;
+    OnlinePage room;
     Card card;
     boolean up; //是否为正反面
     boolean canClick;//是否可被点击
@@ -54,6 +54,8 @@ public class JCard extends JLabel implements MouseListener {
                 step = 20;
             }
             clicked = !clicked;//反向
+            //当被选中的时候，向前移动一步/后退一步
+            Common.move(this, from, new Point(from.x, from.y - step));
         }
     }
 

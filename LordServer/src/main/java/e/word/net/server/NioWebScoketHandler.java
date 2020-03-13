@@ -7,8 +7,7 @@ import e.word.net.model.User;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
-import io.netty.handler.codec.http.DefaultFullHttpResponse;
-import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.codec.http.*;
 import io.netty.handler.codec.http.websocketx.*;
 import io.netty.util.CharsetUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -89,33 +88,29 @@ public class NioWebScoketHandler extends SimpleChannelInboundHandler<Object> {
 
     //唯一的一次HTTP请求
     private void handleHttpRequest(ChannelHandlerContext ctx, FullHttpRequest request) {
-        //要求upgrad为websocket，过滤掉get/Post
-        if (!request.decoderResult().isSuccess()
-                || (!"websocket".equals(request.headers().get("Upgrade")))) {
-            //若不是websocket方式，则创建BAD_REQUEST的request,返回给客户端
-            return;
-        }
-        WebSocketServerHandshakerFactory wsFactory = new WebSocketServerHandshakerFactory("ws://localhost:8081/websocket", null, false);
-        handshaker = wsFactory.newHandshaker(request);
-        if (handshaker == null) {
-            WebSocketServerHandshakerFactory.sendUnsupportedVersionResponse(ctx.channel());
-        } else {
-            handshaker.handshake(ctx.channel(), request);
+        logger.debug("收到Http消息");
+        try {
+            String path = request.uri();
+            String body = request.content().toString(CharsetUtil.UTF_8);
+            HttpMethod method = request.method();
+            if ("/login".equalsIgnoreCase(path)) {
+                //处理登录请求
+                logger.info("处理登录请求。。。。。。");
+                send(body, ctx, HttpResponseStatus.OK);
+            }
+        } catch (Exception e) {
+            logger.error("HTTP消息处理失败" + e);
         }
     }
 
-    private static void sendHttpResponse(ChannelHandlerContext ctx, FullHttpRequest request, DefaultFullHttpResponse response) {
-        //返回应答给客户端
-        if (response.status().code() != 200) {
-            ByteBuf buf = Unpooled.copiedBuffer(response.status().toString(), CharsetUtil.UTF_8);
-            response.content().writeBytes(buf);
-            buf.release();
-        }
-        ChannelFuture future = ctx.channel().writeAndFlush(response);
-        //如果是非Keep-Alive , 关闭连接
-        if (!isKeepAlive(request) || response.status().code() != 200) {
-            future.addListener(ChannelFutureListener.CLOSE);
-        }
+    private void send(String content, ChannelHandlerContext ctx,
+                      HttpResponseStatus status) {
+        FullHttpResponse response =
+                new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, status,
+                        Unpooled.copiedBuffer(content, CharsetUtil.UTF_8));
+        response.headers().set(HttpHeaderNames.CONTENT_TYPE,
+                "text/plain;charset=UTF-8");
+        ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
     }
 
 }

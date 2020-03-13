@@ -3,6 +3,7 @@ package e.wrod.net.view;
 import e.wrod.net.model.Room;
 import e.wrod.net.model.User;
 import e.wrod.net.component.MusicPanel;
+import e.wrod.net.utils.MyWebSocketClient;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -18,7 +19,8 @@ public class HomePage extends JFrame implements ActionListener {
     private User user;
     private Container container = null; //面板容器
     private MusicPanel musicPanel;
-    JMenuItem start, exit, about; //界面上面的按钮
+    JMenuItem offline, online, exit, about; //界面上面的按钮
+    String home = "http://localhost:18090/home";
 
     HomePage(User user) {
         this.user = user;
@@ -50,13 +52,16 @@ public class HomePage extends JFrame implements ActionListener {
         JMenuBar jMenuBar = new JMenuBar();
         JMenu game = new JMenu("开始");
         JMenu help = new JMenu("帮助");
-        start = new JMenuItem("开始");
+        offline = new JMenuItem("单机");
+        online = new JMenuItem("在线");
         exit = new JMenuItem("退出");
         about = new JMenuItem("关于");
-        start.addActionListener(this);
+        offline.addActionListener(this);
+        online.addActionListener(this);
         exit.addActionListener(this);
         about.addActionListener(this);
-        game.add(start);
+        game.add(offline);
+        game.add(online);
         game.add(exit);
         help.add(about);
         jMenuBar.add(game);
@@ -79,11 +84,12 @@ public class HomePage extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == start) {
-            //开始,访问后台，后台对迎新进行匹配
-            this.dispose();
-            Room room = new Room();
-            new ReadyPage(user, room);
+        if (e.getSource() == offline) {
+            //单机对战
+            new OffLinePage();
+        }
+        if (e.getSource() == online) {
+            // TODO: 2020/3/12 在线对战
         }
         if (e.getSource() == about) {
             //关于

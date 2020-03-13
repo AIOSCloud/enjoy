@@ -1,11 +1,15 @@
 package e.wrod.net.view;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import e.wrod.net.model.Message;
 import e.wrod.net.model.User;
+import e.wrod.net.utils.MyHttpClient;
 import e.wrod.net.utils.MyWebSocketClient;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 
+import javax.print.attribute.standard.JobMessageFromOperator;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -15,6 +19,7 @@ import java.awt.event.ActionListener;
  * 登录首页
  */
 public class LoginPage extends JFrame implements ActionListener {
+    private Logger logger = Logger.getLogger(LoginPage.class);
     //定义北部需要的组件
 
     JLabel jbl1;
@@ -30,10 +35,10 @@ public class LoginPage extends JFrame implements ActionListener {
     //定义南部需要的组件
     JPanel jp1;
     JButton jp1_jb1, jp1_jb2, jp1_jb3;
-    MyWebSocketClient ws;
+    String login = "http://localhost:18090/login";
+    String regist = "http://localhost:18090/regist";
 
-    public LoginPage(MyWebSocketClient ws) {
-        this.ws = ws;
+    public LoginPage() {
         //处理北部
         //jbl1 = new JLabel(new ImageIcon(ClassLoader.getSystemResource("image/tou.gif")));
         jbl1 = new JLabel("互联世界，世界互联", JLabel.CENTER);
@@ -112,14 +117,32 @@ public class LoginPage extends JFrame implements ActionListener {
             } else {
                 User user = new User();
                 user.setUserName(jp2_jtf.getText());
-                JOptionPane.showMessageDialog(this, "登录成功，你好:" + user.getUserName());
+                System.out.println(jp2_jtf.getText());
                 Message message = new Message();
-                message.setExtType(1);
-                message.setExtType(1);
-                ws.send(JSON.toJSONString(message));
-                this.dispose();
-                new HomePage(user);
+                message.setMainType(1);
+                message.setExtType(0);
+                message.setUser(user);
+                String content = MyHttpClient.post(login, JSON.toJSONString(message));
+                if (StringUtils.isNotEmpty(content)) {
+                    // TODO: 2020/3/12 登录成功
+                    JOptionPane.showMessageDialog(this, "登录成功");
+                    // TODO: 2020/3/12 带着用户信息,跳转到首页页面
+                    message = JSON.parseObject(content, new TypeReference<Message>() {
+                    }.getType());
+                    new HomePage(user);
+                } else {
+                    // TODO: 2020/3/12 登录失败
+                    JOptionPane.showMessageDialog(this, "用户名密码错误");
+                }
             }
+        }
+        if (e.getSource() == jp1_jb2) {
+            this.dispose();
+            System.exit(0);
+        }
+        if (e.getSource() == jp1_jb3) {
+            // TODO: 2020/3/12 向导按钮
+
         }
     }
 }
