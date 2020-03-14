@@ -1,12 +1,15 @@
 package e.wrod.net.common;
 
 import e.wrod.net.component.JCard;
+import org.apache.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.Point;
 import java.util.*;
 
 public class Common {
+
+    private static Logger logger = Logger.getLogger(Common.class);
 
     //排序
     public static void order(List<JCard> list) {
@@ -234,14 +237,19 @@ public class Common {
 
     //检查牌的是否能出
     public static int checkCards(List<JCard> cards, List<JCard>[] current) {
+        logger.debug("检查是否可以出牌");
         //找出当前最大的牌是哪个电脑出的,c是点选的牌
         List<JCard> currentlist = (current[0].size() > 0) ? current[0] : current[2];
         CardType cType = Common.jugdeType(cards);
+        logger.debug("判断需要出牌的类型:" + cType);
         //如果张数不同直接过滤
-        if (cType != CardType.c4 && cards.size() != currentlist.size())
+        if (cType != CardType.c4 && cards.size() != currentlist.size()) {
+            logger.debug("出牌张数不对......");
             return 0;
+        }
         //比较我的出牌类型
         if (Common.jugdeType(cards) != Common.jugdeType(currentlist)) {
+            logger.debug("出的牌比较小......");
             return 0;
         }
         //比较出的牌是否要大
@@ -254,6 +262,7 @@ public class Common {
         }
         //单牌,对子,3带,4炸弹
         if (cType == CardType.c1 || cType == CardType.c2 || cType == CardType.c3 || cType == CardType.c4) {
+            logger.debug("Common.getValue(cards.get(0))" + Common.getValue(cards.get(0)) + "    Common.getValue(currentlist.get(0)):" + Common.getValue(currentlist.get(0)));
             if (Common.getValue(cards.get(0)) <= Common.getValue(currentlist.get(0))) {
                 return 0;
             } else {

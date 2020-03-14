@@ -1,13 +1,17 @@
 package e.wrod.net.common;
 
 import e.wrod.net.component.JCard;
+import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Compute {
+    private static Logger logger = Logger.getLogger(Compute.class);
+
     //拆牌
     public static Model getModel(List<JCard> list) {
+        logger.debug("牌分类......");
         //先复制一个list
         List list2 = new ArrayList<JCard>(list);
         Model model = new Model();
@@ -98,7 +102,7 @@ public class Compute {
         //从model里面的3带找
         List<List<JCard>> threes = model.getA3();
         List<JCard> cards;
-        List<JCard> three2;
+        List<JCard> plans;
         if (threes.size() < 2)
             return;
         JCard card[] = new JCard[threes.size()];
@@ -113,12 +117,12 @@ public class Compute {
                     k = j;
             }
             if (k != i) {//说明从i到k是飞机
-                three2 = new ArrayList<>(2);
+                plans = new ArrayList<>(2);
                 for (int j = i; j <= k; j++) {
-                    three2.addAll(threes.get(j));
+                    plans.addAll(threes.get(j));
                     del.add(threes.get(j));
                 }
-                model.getA111222().add(three2);
+                model.getA111222().add(plans);
                 i = k;
             }
         }
@@ -127,8 +131,9 @@ public class Compute {
 
     //拆炸弹
     public static void getBoomb(List<JCard> list, Model model) {
+        logger.debug("牌型分类炸弹");
         List<JCard> del = new ArrayList<JCard>();//要删除的Cards
-        List<JCard> boom;
+        List<JCard> boom = null;
         //王炸
         if (list.size() >= 2 && list.get(0).getCard().getColor() == 5 && list.get(1).getCard().getColor() == 5) {
             boom = new ArrayList<>(2);
@@ -147,6 +152,7 @@ public class Compute {
                     boom.add(list.get(j));
                     del.add(list.get(j));
                 }
+                model.getA4().add(boom);
                 i = i + 3;
             }
         }
@@ -155,6 +161,7 @@ public class Compute {
 
     //拆3带
     public static void getThree(List<JCard> list, Model model) {
+        logger.debug("牌型分类三带");
         List<JCard> del = new ArrayList<JCard>();//要删除的Cards
         List<JCard> three;
         //连续3张相同
@@ -165,6 +172,7 @@ public class Compute {
                     three.add(list.get(j));
                     del.add(list.get(j));
                 }
+                model.getA123().add(three);
                 i = i + 2;
             }
         }
@@ -173,16 +181,18 @@ public class Compute {
 
     //拆对子
     public static void getTwo(List<JCard> list, Model model) {
+        logger.debug("牌型分类对子");
         List<JCard> del = new ArrayList<JCard>();//要删除的Cards
         List<JCard> two;
         //连续2张相同
         for (int i = 0, len = list.size(); i < len; i++) {
             if (i + 1 < len && Common.getValue(list.get(i)) == Common.getValue(list.get(i + 1))) {
                 two = new ArrayList<>(2);
-                for (int j = i; j <= i + 1; j++) {
-                    two.add(list.get(j));
-                    del.add(list.get(j));
-                }
+                two.add(list.get(i));
+                two.add(list.get(i + 1));
+                del.add(list.get(i));
+                del.add(list.get(i + 1));
+                model.getA2().add(two);
                 i = i + 1;
             }
         }
@@ -191,6 +201,7 @@ public class Compute {
 
     //拆单牌
     public static void getSingle(List<JCard> list, Model model) {
+        logger.debug("牌型分类单牌");
         List<JCard> del = new ArrayList<JCard>();//要删除的Cards
         List<JCard> single;
         for (int i = 0, len = list.size(); i < len; i++) {

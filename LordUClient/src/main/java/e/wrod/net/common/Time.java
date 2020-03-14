@@ -178,19 +178,24 @@ public class Time extends Thread {
         // 待走的牌
         List<JCard> cards = new ArrayList<>();
         // 如果是主动出牌
-        if (main.getTime()[(role + 1) % 3].getText().equals("不要")
-                && main.getTime()[(role + 2) % 3].getText().equals("不要")) {
+        if ((main.getTime()[(role + 1) % 3].getText().equals("不要")
+                && main.getTime()[(role + 2) % 3].getText().equals("不要"))) {
+            logger.debug("用户" + role + "主动出牌");
             // 有单出单 (除开3带，飞机能带的单牌)
             if (model.getA1().size() > (model.getA111222().size() * 2 + model.getA3().size())) {
+                logger.debug("有单牌就出单牌" + model.getA1().size());
                 cards.addAll(model.getA1().get(model.getA1().size() - 1));
             }// 有对子出对子 (除开3带，飞机)
             else if (model.getA2().size() > (model.getA111222().size() * 2 + model.getA3().size())) {
+                logger.debug("有对子就出对子" + model.getA2().size());
                 cards.addAll(model.getA2().get(model.getA2().size() - 1));
             }// 有顺子出顺子
             else if (model.getA123().size() > 0) {
+                logger.debug("有顺子就出顺子" + model.getA123().size());
                 cards.addAll(model.getA123().get(model.getA123().size() - 1));
             }// 有3带就出3带，没有就出光3
             else if (model.getA3().size() > 0) {
+                logger.debug("有三个就出三个" + model.getA3().size());
                 // 3带单,且非关键时刻不能带王，2
                 if (model.getA1().size() > 0) {
                     cards.addAll(model.getA1().get(model.getA1().size() - 1));
@@ -201,9 +206,11 @@ public class Time extends Thread {
                 cards.addAll(model.getA3().get(model.getA3().size() - 1));
             }// 有双顺出双顺
             else if (model.getA112233().size() > 0) {
+                logger.debug("有连队就出连队" + model.getA3().size());
                 cards.addAll(model.getA112233().get(model.getA112233().size() - 1));
             }// 有飞机出飞机
             else if (model.getA111222().size() > 0) {
+                logger.debug("有飞机就出飞机" + model.getA3().size());
                 // 带单
                 if (model.getA1().size() > 2) {
                     cards.addAll(model.getA111222().get(model.getA111222().size() - 1));
@@ -219,6 +226,7 @@ public class Time extends Thread {
                 }
                 // 有炸弹出炸弹
             } else if (model.getA4().size() > 0) {
+                logger.debug("有炸弹就出炸弹" + model.getA3().size());
                 // 4带2,1
                 int sizea1 = model.getA1().size();
                 int sizea2 = model.getA2().size();
@@ -237,10 +245,10 @@ public class Time extends Thread {
             }
         }// 如果是跟牌
         else {
+            logger.debug("用户" + role + "跟牌");
             List<JCard> player = main.getCurrentList()[(role + 2) % 3].size() > 0
                     ? main.getCurrentList()[(role + 2) % 3]
                     : main.getCurrentList()[(role + 1) % 3];
-
             CardType cType = Common.jugdeType(player);
             logger.debug("判断出牌的类型为:" + cType);
             //如果是单牌
@@ -296,6 +304,7 @@ public class Time extends Thread {
                     cards.addAll(model.a4.get(len4 - 1));
             }
         }
+        logger.debug("出牌的张数为:" + cards.size());
         // 定位出牌
         main.getCurrentList()[role].clear();
         if (cards.size() > 0) {
@@ -306,13 +315,11 @@ public class Time extends Thread {
                 point.x = 550;
             point.y = (400 / 2) - (cards.size() + 1) * 15 / 2;// 屏幕中部
             // 将name转换成Card
-            for (int i = 0, len = cards.size(); i < len; i++) {
-                for (JCard card : cards) {
-                    Common.move(card, card.getLocation(), point);
-                    point.y += 15;
-                    main.getCurrentList()[role].add(card);
-                    main.getPlayerList()[role].remove(card);
-                }
+            for (JCard card : cards) {
+                Common.move(card, card.getLocation(), point);
+                point.y += 15;
+                main.getCurrentList()[role].add(card);
+                main.getPlayerList()[role].remove(card);
             }
             Common.rePosition(main, main.getPlayerList()[role], role);
         } else {
@@ -327,7 +334,6 @@ public class Time extends Thread {
 
     //顺子
     public void AI_3(List<List<JCard>> model, List<JCard> player, List<JCard> list, int role) {
-
         for (int i = 0, len = model.size(); i < len; i++) {
             List<JCard> flow = model.get(i);
             if (flow.size() == player.size() && Common.getValue(model.get(i).get(0)) > Common.getValue(player.get(0))) {
@@ -380,15 +386,15 @@ public class Time extends Thread {
         //顶家
         if ((role + 1) % 3 == main.getLordFlag()) {
             for (int i = 0, len = model.size(); i < len; i++) {
-                if (Common.getValue(model.get(i).get(0)) > Common.getValue(list.get(0))) {
-                    list.add(model.get(i).get(0));
+                if (Common.getValue(model.get(i).get(0)) > Common.getValue(player.get(0))) {
+                    list.addAll(model.get(i));
                     break;
                 }
             }
         } else {//偏家
             for (int len = model.size(), i = len - 1; i >= 0; i--) {
                 if (Common.getValue(model.get(i).get(0)) > Common.getValue(player.get(0))) {
-                    list.add(model.get(i).get(0));
+                    list.addAll(model.get(i));
                     break;
                 }
             }
@@ -451,18 +457,6 @@ public class Time extends Thread {
             }
         }
         main.getTime()[player].setVisible(false);
-    }
-
-    //通过name估值
-    public int getValueInt(String n) {
-        String name[] = n.split(",");
-        String s = name[0];
-        int i = Integer.parseInt(s.substring(2, s.length()));
-        if (s.substring(0, 1).equals("5"))
-            i += 3;
-        if (s.substring(2, s.length()).equals("1") || s.substring(2, s.length()).equals("2"))
-            i += 13;
-        return i;
     }
 
     //判断输赢

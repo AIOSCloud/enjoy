@@ -181,7 +181,8 @@ public class OffLinePage extends JFrame implements ActionListener {
                     // TODO: 2020/3/12 玩家1
                     point = new Point(50, 60 + i * 5);
                     Common.move(jCards[i], jCards[i].getLocation(), point);
-                    playerList[0].add(jCards[0]);
+                    jCards[i].turnFront();
+                    playerList[0].add(jCards[i]);
                     break;
                 case 1:
                     // TODO: 2020/3/12 玩家2:
@@ -194,6 +195,7 @@ public class OffLinePage extends JFrame implements ActionListener {
                     //todo 玩家3
                     point = new Point(700, 60 + i * 5);
                     Common.move(jCards[i], jCards[i].getLocation(), point);
+                    jCards[i].turnFront();
                     playerList[2].add(jCards[i]);
                     break;
             }
@@ -203,6 +205,7 @@ public class OffLinePage extends JFrame implements ActionListener {
 
     public void CardOrder() {
         for (int i = 0; i < 3; i++) {
+            logger.debug("对玩家:" + i + " 牌排序");
             Common.order(playerList[i]);
             Common.rePosition(this, playerList[i], i);
         }
@@ -248,7 +251,7 @@ public class OffLinePage extends JFrame implements ActionListener {
                 flag = Common.checkCards(cards, currentList);
             }
             //可以出牌
-            logger.debug("判断是否可以出牌......");
+            logger.debug("判断是否可以出牌:" + flag);
             logger.debug("当前自己出牌的数量:" + currentList[1].size());
             if (flag == 1) {
                 currentList[1] = cards;
@@ -271,7 +274,9 @@ public class OffLinePage extends JFrame implements ActionListener {
             }
         }
         if (e.getSource() == publishCard[1]) {
-
+            this.nextPlayer = true;
+            currentList[1].clear();
+            time[1].setText("不要");
         }
 
     }
