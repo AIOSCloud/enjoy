@@ -1,6 +1,7 @@
 package e.wrod.net.common;
 
 import e.wrod.net.component.JCard;
+import e.wrod.net.view.RoomPage;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;

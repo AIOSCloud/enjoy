@@ -1,9 +1,8 @@
 package e.wrod.net.view;
 
-import e.wrod.net.common.CardType;
-import e.wrod.net.common.Common;
-import e.wrod.net.common.NewTimer;
-import e.wrod.net.common.Time;
+import e.wrod.net.common.Common2;
+import e.wrod.net.common.NewTimer2;
+import e.wrod.net.common.UTimer;
 import e.wrod.net.component.JCard;
 import e.wrod.net.model.Card;
 import e.wrod.net.model.User;
@@ -20,25 +19,19 @@ import java.util.Random;
 import java.util.Vector;
 
 @Data
-public class OffLinePage extends JFrame implements ActionListener {
-    private final Logger logger = Logger.getLogger(OffLinePage.class);
-    List<User> user;
-    Container container = null; //面板容器
-    JMenuItem start, exit, about; //界面上面的按钮
-    JButton[] landlord = new JButton[2]; //抢地主，抢，不抢的按钮
-    JButton[] publishCard = new JButton[2]; //出牌　出，不出的按钮
-    int lordFlag; //地主标志
-    int turn;
-    Time t;
-    JLabel lord;
-    List<JCard> currentList[] = new Vector[3];
-    List<JCard> playerList[] = new ArrayList[3];
-    List<JCard> lordList;
-    JCard jCards[] = new JCard[54];
-    JTextField time[] = new JTextField[3];
-    boolean nextPlayer = false;//下一个用户
+public class AIPage extends RoomPage implements ActionListener {
+    Logger logger = Logger.getLogger(AIPage.class);
 
-    OffLinePage() {
+    AIPage(User user, List<User> users) {
+        //用户信息初始化
+        this.user = user;
+        this.users = users;
+        for (int i = 0; i < this.users.size(); i++) {
+            if (user.getUserName().equals(this.users.get(i).getUserName())) {
+                position = i;
+            }
+        }
+        logger.debug("用户位置:" + position);
         //界面出事化
         Init();
         // 设置菜单按钮
@@ -53,7 +46,7 @@ public class OffLinePage extends JFrame implements ActionListener {
         time[1].setVisible(true);
         // 设置当前面板可见
         this.setVisible(true);
-        SwingUtilities.invokeLater(new NewTimer(this, 10));
+        SwingUtilities.invokeLater(new NewTimer2(this, position));
     }
 
     public void landLord() {
@@ -118,15 +111,10 @@ public class OffLinePage extends JFrame implements ActionListener {
         time[0].setBounds(140, 230, 60, 20);
         time[1].setBounds(374, 360, 60, 20);
         time[2].setBounds(620, 230, 60, 20);
-
-        for (int i = 0; i < 3; i++) {
-            currentList[i] = new Vector<JCard>();
-        }
     }
 
     // TODO: 2020/3/10 卡片初始化
     public void CardInit() {
-        //初始化牌
         int count = 0;
         for (int i = 1; i <= 5; i++) {
             for (int j = 1; j <= 13; j++) {
@@ -135,7 +123,7 @@ public class OffLinePage extends JFrame implements ActionListener {
                 } else {
                     Card card = new Card(i, j);
                     jCards[count] = new JCard(card, false);
-                    jCards[count].setLocation(350, 50);
+                    jCards[count].setLocation(350 + i * 5, 50);
                     container.add(jCards[count]);
                     count++;
                 }
@@ -148,7 +136,6 @@ public class OffLinePage extends JFrame implements ActionListener {
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
-
             e.printStackTrace();
         }
         System.out.println(jCards.length);
@@ -163,17 +150,13 @@ public class OffLinePage extends JFrame implements ActionListener {
         }
     }
 
-    // TODO: 2020/3/12 发牌
+    // TODO: 2020/3/12 发牌 如果要考虑 当前客户端用户呢？如何处理呢？
     public void dealCard() {
-        //初始化玩家的牌
-        for (int i = 0; i < 3; i++) {
-            playerList[i] = new ArrayList<JCard>();
-        }
         //初始化地主牌
         lordList = new Vector<JCard>();
         for (int i = 0; i < 54; i++) {
             if (i >= 51) {//地主牌
-                Common.move(jCards[i], jCards[i].getLocation(), new Point(320 + (i - 51) * 80, 10));
+                Common2.move(jCards[i], jCards[i].getLocation(), new Point(320 + (i - 51) * 80, 10));
                 lordList.add(jCards[i]);
                 continue;
             }
@@ -182,23 +165,22 @@ public class OffLinePage extends JFrame implements ActionListener {
                 case 0:
                     // TODO: 2020/3/12 玩家1
                     point = new Point(50, 60 + i * 5);
-                    Common.move(jCards[i], jCards[i].getLocation(), point);
-                    jCards[i].turnFront();
-                    playerList[0].add(jCards[i]);
+                    Common2.move(jCards[i], jCards[i].getLocation(), point);
+                    //发牌
+                    users.get(Common2.befor(position)).addCard(jCards[i]);
                     break;
                 case 1:
                     // TODO: 2020/3/12 玩家2:
                     point = new Point(180 + i * 7, 450);
-                    Common.move(jCards[i], jCards[i].getLocation(), point);
+                    Common2.move(jCards[i], jCards[i].getLocation(), point);
                     jCards[i].turnFront();
-                    playerList[1].add(jCards[i]);
+                    users.get(Common2.mine(position)).addCard(jCards[i]);
                     break;
                 case 2:
                     //todo 玩家3
                     point = new Point(700, 60 + i * 5);
-                    Common.move(jCards[i], jCards[i].getLocation(), point);
-                    jCards[i].turnFront();
-                    playerList[2].add(jCards[i]);
+                    Common2.move(jCards[i], jCards[i].getLocation(), point);
+                    users.get(Common2.next(position)).addCard(jCards[i]);
                     break;
             }
             container.setComponentZOrder(jCards[i], 0);
@@ -208,8 +190,8 @@ public class OffLinePage extends JFrame implements ActionListener {
     public void CardOrder() {
         for (int i = 0; i < 3; i++) {
             logger.debug("对玩家:" + i + " 牌排序");
-            Common.order(playerList[i]);
-            Common.rePosition(this, playerList[i], i);
+            Common2.order(users.get(i).getPlayers());
+            Common2.rePosition(this, users.get(i).getPlayers(), i, position);
         }
     }
 
@@ -224,66 +206,52 @@ public class OffLinePage extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == landlord[0]) {
             // TODO: 2020/3/13 抢地主
-            System.out.println("抢地主，抢地主。。。。。。。。。。。。");
+            logger.debug("抢地主，抢地主。。。。。。。。。。。。");
+            users.get(position).setLord(true);
+            users.get(position).setLordFlag(true);
             time[1].setText("抢地主");
-            t.setIsRun(false);
+            timer.setLoadLord(false);
         }
         if (e.getSource() == landlord[1]) {
             //不抢
             time[1].setText("不抢");
-            t.setIsRun(false);
+            timer.setLoadLord(false);
         }
         if (e.getSource() == publishCard[0]) {
-            logger.debug("出牌......");
-            // 出牌
-            List<JCard> cards = new Vector<>();
-            for (int i = 0; i < playerList[1].size(); i++) {
-                JCard card = playerList[1].get(i);
-                if (card.isClicked()) {
-                    cards.add(card);
-                }
-            }
-            int flag = 0;
-            logger.info("开始判断是否可以出牌......");
-            if (time[0].getText().equals("不要") && time[2].getText().equals("不要")) {
-                logger.debug("判断需要出牌的类型:" + Common.jugdeType(cards));
-                if (Common.jugdeType(cards) != CardType.c0)
-                    flag = 1;
-            } else {
-                flag = Common.checkCards(cards, currentList);
-            }
-            //可以出牌
-            logger.debug("判断是否可以出牌:" + flag);
-            logger.debug("当前自己出牌的数量:" + currentList[1].size());
-            if (flag == 1) {
-                currentList[1] = cards;
-                playerList[1].removeAll(cards);
-                //定位出牌
-                Point point = new Point();
-                point.x = (770 / 2) - (currentList[1].size() + 1) * 15 / 2;
-                point.y = 300;
-                for (int i = 0, len = currentList[1].size(); i < len; i++) {
-                    JCard card = currentList[1].get(i);
-                    Common.move(card, card.getLocation(), point);
-                    point.x += 15;
-                }
-                //重新理牌
-                Common.rePosition(this, playerList[1], 1);
-                time[1].setVisible(false);
-                this.nextPlayer = true;
-                publishCard[0].setVisible(false);
-                publishCard[1].setVisible(false);
-            }
+            // TODO: 2020/3/15 出牌 
+            logger.debug("出牌");
         }
         if (e.getSource() == publishCard[1]) {
-            this.nextPlayer = true;
-            currentList[1].clear();
-            time[1].setText("不要");
+            // TODO: 2020/3/15 不要 
         }
 
     }
 
     public static void main(String[] args) {
-        new OffLinePage();
+        List<User> users = new ArrayList<>(3);
+        User user = new User();
+        //初始化AI1
+        user.setUserId(0);
+        user.setUserName("AI1");
+        user.setDeposit(false);
+        users.add(user);
+        //初始化AI2
+        User user1 = new User();
+        user1.setUserId(1);
+        user1.setUserName("徐昌");
+        user1.setDeposit(false);
+        users.add(user1);
+        //初始化AI3
+        User user2 = new User();
+        user2.setUserId(2);
+        user2.setUserName("AI1");
+        user2.setDeposit(false);
+        users.add(user2);
+
+        User user0 = new User();
+        user0.setUserId(0);
+        user0.setUserName("徐昌");
+        user0.setDeposit(false);
+        new AIPage(user0, users);
     }
 }

@@ -13,6 +13,7 @@ public class Time extends Thread {
     private Logger logger = Logger.getLogger(Time.class);
     OffLinePage main;
     boolean isRun = true;
+    boolean position;
     int i = 10;
 
     public void setIsRun(boolean isRun) {
@@ -48,6 +49,7 @@ public class Time extends Thread {
             Common.order(main.getPlayerList()[1]);
             Common.rePosition(main, main.getPlayerList()[1], 1);
             setLord(1);
+            openlord(false);
         } else {
             // 电脑选地主
             logger.debug("电脑抢地主");
@@ -70,11 +72,9 @@ public class Time extends Thread {
                 main.getPlayerList()[0].addAll(main.getLordList());
                 Common.order(main.getPlayerList()[0]);
                 Common.rePosition(main, main.getPlayerList()[0], 0);
+                openlord(false);
             }
         }
-        // 选完地主后 关闭地主按钮
-        main.getLandlord()[0].setVisible(false);
-        main.getLandlord()[1].setVisible(false);
         turnOn(false);
         for (int i = 0; i < 3; i++) {
             main.getTime()[i].setText("不要");
