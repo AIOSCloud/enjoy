@@ -4,6 +4,7 @@ import e.wrod.net.component.JCard;
 import e.wrod.net.view.AIPage;
 import org.apache.log4j.Logger;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
@@ -112,6 +113,8 @@ public class UTimer extends Thread {
                 showCards(cards, mine, mine);
                 page.getPublishCard()[0].setVisible(false);
                 page.getPublishCard()[1].setVisible(false);
+                if (win())//判断输赢
+                    break;
             }
             if (page.getTurn() == next) {
                 logger.debug("下一家用户出牌。。。。。" + next);
@@ -124,6 +127,8 @@ public class UTimer extends Thread {
                 AIClient client = new AIClient(page.getPlayerList()[next], shows, page.getLordFlag(), next);
                 List<JCard> cards = client.plays();
                 showCards(cards, next, mine);
+                if (win())//判断输赢
+                    break;
             }
             if (page.getTurn() == befor) {
                 logger.debug("上一家用户出牌。。。。。" + befor);
@@ -137,8 +142,27 @@ public class UTimer extends Thread {
                 AIClient client = new AIClient(page.getPlayerList()[befor], shows, page.getLordFlag(), befor);
                 List<JCard> cards = client.plays();
                 showCards(cards, befor, mine);
+                if (win())//判断输赢
+                    break;
             }
         }
+    }
+
+    //判断输赢
+    public boolean win() {
+        for (int i = 0; i < 3; i++) {
+            if (page.getPlayerList()[i].size() == 0) {
+                String s;
+                if (i == mine) {
+                    s = "恭喜你，胜利了!";
+                } else {
+                    s = "恭喜电脑" + i + ",赢了! 你的智商有待提高哦";
+                }
+                JOptionPane.showMessageDialog(page, s);
+                return true;
+            }
+        }
+        return false;
     }
 
     // 地主牌翻看
@@ -221,7 +245,7 @@ public class UTimer extends Thread {
         int befor = Common2.befor(position);
         int mine = Common2.mine(position);
         int next = Common2.next(position);
-        // TODO: 2020/3/16 出牌时首先需要清除自己的currentList 
+        // TODO: 2020/3/16 出牌时首先需要清除自己的currentList
         page.getCurrentList()[role].clear();
         // 定位出牌
         if (cards.size() > 0) {
