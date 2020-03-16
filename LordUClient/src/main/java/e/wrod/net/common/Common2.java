@@ -124,7 +124,6 @@ public class Common2 {
         {
             point.x = 120;
             point.y = 480;
-            page.getUsers().get(i).setLordFlag(true);
         }
         if (i == 0) {
             point.x = 80;
@@ -134,7 +133,6 @@ public class Common2 {
             point.x = 700;
             point.y = 20;
         }
-        page.getUsers().get(i).setLordFlag(true);
         page.getLord().setLocation(point);
         page.getLord().setVisible(true);
     }

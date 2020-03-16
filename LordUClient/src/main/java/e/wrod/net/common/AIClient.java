@@ -1,7 +1,6 @@
 package e.wrod.net.common;
 
 import e.wrod.net.component.JCard;
-import e.wrod.net.model.User;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -12,20 +11,33 @@ import java.util.List;
  */
 public class AIClient {
     Logger logger = Logger.getLogger(AIClient.class);
-    User user;
-    int role;
+    List<JCard> players;
+    List<JCard> shows;
+    int mine;
+    int lord;
 
-    AIClient(User user, int role) {
-        this.user = user;
-        this.role = role;
+    AIClient(List<JCard> players, List<JCard> shows, int lord, int mine) {
+        this.players = players;
+        this.shows = shows;
+        this.mine = mine;
+        this.lord = lord;
     }
 
-    public List<JCard> showCard() {
-        Model model = Compute.getModel(user.getPlayers());
+    public List<JCard> plays() {
+        Model model = Compute.getModel(players);
         // 待走的牌
         List<JCard> cards = new ArrayList<>();
+        logger.info("用户" + mine + "出牌");
+        if (shows != null && shows.size() > 0) {
+            logger.debug("判断为跟牌。。。。。" + shows.size());
+            for (JCard card : shows) {
+                logger.debug("出牌:  " + card.getCard().getColor() + "-" + card.getCard().getNumber());
+            }
+        } else {
+            logger.debug("判断为主动出牌");
+        }
         // 如果是主动出牌
-        if (!user.isFollow()) {
+        if (shows == null || shows.size() == 0) {
             // 有单出单 (除开3带，飞机能带的单牌)
             if (model.getA1().size() > (model.getA111222().size() * 2 + model.getA3().size())) {
                 logger.debug("有单牌就出单牌" + model.getA1().size());
@@ -90,58 +102,53 @@ public class AIClient {
             }
         }// 如果是跟牌
         else {
-            // TODO: 2020/3/15 判断之前用户的出牌
-            List<JCard> shows = user.getShows();
-            List<JCard> player = user.getPlayers();
-            //获取地主
-            int lordRole = user.getLordRole();
             CardType cType = Common.jugdeType(shows);
             logger.debug("判断出牌的类型为:" + cType);
             //如果是单牌
             if (cType == CardType.c1) {
-                AI_1(model.a1, player, cards, lordRole, role);
+                AI_1(model.a1, shows, cards, lord, mine);
             }//如果是对子
             else if (cType == CardType.c2) {
-                AI_1(model.a2, player, cards, lordRole, role);
+                AI_1(model.a2, shows, cards, lord, mine);
             }//3带
             else if (cType == CardType.c3) {
-                AI_1(model.a3, player, cards, lordRole, role);
+                AI_1(model.a3, shows, cards, lord, mine);
             }//炸弹
             else if (cType == CardType.c4) {
-                AI_1(model.a4, player, cards, lordRole, role);
+                AI_1(model.a4, shows, cards, lord, mine);
             }//如果是3带1
             else if (cType == CardType.c31) {
                 //偏家 涉及到拆牌
                 //if((role+1)%3==main.dizhuFlag)
-                AI_2(model.a3, model.a1, player, cards, role);
+                AI_2(model.a3, model.a1, shows, cards, lord, mine);
             }//如果是3带2
             else if (cType == CardType.c32) {
                 //偏家
                 //if((role+1)%3==main.dizhuFlag)
-                AI_2(model.a3, model.a2, player, cards, role);
+                AI_2(model.a3, model.a2, shows, cards, lord, mine);
             }//如果是4带11
             else if (cType == CardType.c411) {
-                AI_5(model.a4, model.a1, player, cards, role);
+                AI_5(model.a4, model.a1, shows, cards, lord, mine);
             }
             //如果是4带22
             else if (cType == CardType.c422) {
-                AI_5(model.a4, model.a2, player, cards, role);
+                AI_5(model.a4, model.a2, shows, cards, lord, mine);
             }
             //顺子
             else if (cType == CardType.c123) {
-                AI_3(model.a123, player, cards, role);
+                AI_3(model.a123, shows, cards, lord, mine);
             }
             //双顺
             else if (cType == CardType.c1122) {
-                AI_3(model.a112233, player, cards, role);
+                AI_3(model.a112233, shows, cards, lord, mine);
             }
             //飞机带单
             else if (cType == CardType.c11122234) {
-                AI_4(model.a111222, model.a1, player, cards, role);
+                AI_4(model.a111222, model.a1, shows, cards, lord, mine);
             }
             //飞机带对
             else if (cType == CardType.c1112223344) {
-                AI_4(model.a111222, model.a2, player, cards, role);
+                AI_4(model.a111222, model.a2, shows, cards, lord, mine);
             }
             //炸弹
             if (cards.size() == 0) {
@@ -155,10 +162,10 @@ public class AIClient {
     }
 
     //顺子
-    public void AI_3(List<List<JCard>> model, List<JCard> player, List<JCard> list, int role) {
+    public void AI_3(List<List<JCard>> model, List<JCard> shows, List<JCard> list, int lord, int role) {
         for (int i = 0, len = model.size(); i < len; i++) {
             List<JCard> flow = model.get(i);
-            if (flow.size() == player.size() && Common.getValue(model.get(i).get(0)) > Common.getValue(player.get(0))) {
+            if (flow.size() == shows.size() && Common.getValue(model.get(i).get(0)) > Common.getValue(shows.get(0))) {
                 list.addAll(model.get(i));
                 return;
             }
@@ -166,9 +173,9 @@ public class AIClient {
     }
 
     //飞机带单，双
-    public void AI_4(List<List<JCard>> model1, List<List<JCard>> model2, List<JCard> player, List<JCard> list, int role) {
+    public void AI_4(List<List<JCard>> model1, List<List<JCard>> model2, List<JCard> shows, List<JCard> list, int lord, int role) {
         //排序按重复数
-        Common.order(player);
+        Common.order(shows);
         int len1 = model1.size();
         int len2 = model2.size();
 
@@ -177,7 +184,7 @@ public class AIClient {
         for (int i = 0; i < len1; i++) {
             List<JCard> plan = model1.get(i);
             List<JCard> twos = model2.get(0);
-            if ((plan.size() / 3 <= len2) && (plan.size() * (3 + twos.size()) == player.size()) && Common.getValue(model1.get(i).get(0)) > Common.getValue(player.get(0))) {
+            if ((plan.size() / 3 <= len2) && (plan.size() * (3 + twos.size()) == shows.size()) && Common.getValue(model1.get(i).get(0)) > Common.getValue(shows.get(0))) {
                 list.addAll(model1.get(i));
                 for (int j = 1; j <= plan.size(); j++)
                     list.addAll(model2.get(len2 - j));
@@ -186,17 +193,17 @@ public class AIClient {
     }
 
     //4带1，2
-    public void AI_5(List<List<JCard>> model1, List<List<JCard>> model2, List<JCard> player, List<JCard> list, int role) {
+    public void AI_5(List<List<JCard>> model1, List<List<JCard>> model2, List<JCard> shows, List<JCard> list, int lord, int role) {
         //排序按重复数
-        Common.order(player);
+        Common.order(shows);
         int len1 = model1.size();
         int len2 = model2.size();
 
         if (len1 < 1 || len2 < 2)
             return;
-        for (int i = 0; i < len1; i++) {
-            if (Common.getValue(model1.get(i).get(0)) > Common.getValue(player.get(0))) {
-                list.addAll(model1.get(i));
+        for (List<JCard> cards : model1) {
+            if (Common.getValue(cards.get(0)) > Common.getValue(shows.get(0))) {
+                list.addAll(cards);
                 for (int j = 1; j <= 2; j++)
                     list.addAll(model2.get(len2 - j));
             }
@@ -204,20 +211,22 @@ public class AIClient {
     }
 
     //单牌，对子，3个，4个,通用
-    public void AI_1(List<List<JCard>> model, List<JCard> players, List<JCard> cards, int lordRole, int role) {
+    public void AI_1(List<List<JCard>> model, List<JCard> shows, List<JCard> cards, int lord, int mine) {
         //顶家
-        if ((role + 1) % 3 == lordRole) {
-            for (int i = 0, len = model.size(); i < len; i++) {
+        if ((mine + 1) % 3 == lord) {
+            logger.debug("地主为下家");
+            for (List<JCard> jCards : model) {
                 // TODO: 2020/3/15 出小的
-                if (Common.getValue(model.get(i).get(0)) > Common.getValue(players.get(0))) {
-                    cards.addAll(model.get(i));
+                if (Common.getValue(jCards.get(0)) > Common.getValue(shows.get(0))) {
+                    cards.addAll(jCards);
                     break;
                 }
             }
         } else {//偏家
+            logger.debug("地主为上家");
             for (int len = model.size(), i = len - 1; i >= 0; i--) {
                 // TODO: 2020/3/15 出小的
-                if (Common.getValue(model.get(i).get(0)) > Common.getValue(players.get(0))) {
+                if (Common.getValue(model.get(i).get(0)) > Common.getValue(shows.get(0))) {
                     cards.addAll(model.get(i));
                     break;
                 }
@@ -226,28 +235,26 @@ public class AIClient {
     }
 
     //3带1,2,4带1,2
-    public void AI_2(List<List<JCard>> model1, List<List<JCard>> model2, List<JCard> player, List<JCard> list, int role) {
+    public void AI_2(List<List<JCard>> model1, List<List<JCard>> model2, List<JCard> shows, List<JCard> cards, int lord, int role) {
         //model1是主牌,model2是带牌,player是玩家出的牌,list是准备回的牌
-        //排序按重复数
-        Common.order(player);
         int len1 = model1.size();
         int len2 = model2.size();
         //如果有王直接炸了
         if (len1 > 0 && model1.get(0).size() < 10) {
-            list.addAll(model1.get(0));
+            cards.addAll(model1.get(0));
             System.out.println("王炸");
             return;
         }
         if (len1 < 1 || len2 < 1)
             return;
         for (int len = len1, i = len - 1; i >= 0; i--) {
-            if (Common.getValue(model1.get(i).get(0)) > Common.getValue(player.get(0))) {
-                list.addAll(model1.get(i));
+            if (Common.getValue(model1.get(i).get(0)) > Common.getValue(shows.get(0))) {
+                cards.addAll(model1.get(i));
                 break;
             }
         }
-        list.addAll(model2.get(len2 - 1));
-        if (list.size() < 2)
-            list.clear();
+        cards.addAll(model2.get(len2 - 1));
+        if (cards.size() < 2)
+            cards.clear();
     }
 }

@@ -17,19 +17,37 @@ public class Compute {
         Model model = new Model();
         //------先拆炸弹
         Compute.getBoomb(list2, model); //ok
+        printModel(model.getA4());
         //------拆3带
         Compute.getThree(list2, model);
+        printModel(model.getA3());
         //拆飞机
         Compute.getPlane(list2, model);
+        printModel(model.getA111222());
         //------拆对子
         Compute.getTwo(list2, model);
+        printModel(model.getA2());
         //拆连队
         Compute.getTwoTwo(list2, model);
+        printModel(model.getA112233());
         //拆顺子
         Compute.get123(list2, model);
+        printModel(model.getA123());
         //拆单
         Compute.getSingle(list2, model);
+        printModel(model.getA1());
         return model;
+    }
+
+    public static void printModel(List<List<JCard>> model) {
+        int count = 0;
+        for (List<JCard> cards : model) {
+            logger.debug("拆牌:" + count);
+            for (JCard card : cards) {
+                logger.debug("拆牌:" + card.getCard().getColor() + "-" + card.getCard().getNumber());
+            }
+            count++;
+        }
     }
 
     //拆连子

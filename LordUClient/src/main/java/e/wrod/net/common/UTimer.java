@@ -1,7 +1,6 @@
 package e.wrod.net.common;
 
 import e.wrod.net.component.JCard;
-import e.wrod.net.model.User;
 import e.wrod.net.view.AIPage;
 import org.apache.log4j.Logger;
 
@@ -11,27 +10,28 @@ import java.util.List;
 public class UTimer extends Thread {
     Logger logger = Logger.getLogger(UTimer.class);
     AIPage page;
-    int position;
+    int mine;
+    int befor;
+    int next;
     int i = 10;
-    boolean landLord = true;
+    boolean run = true;
 
-    public void setLoadLord(boolean landLord) {
-        this.landLord = landLord;
+    public void isRun(boolean landLord) {
+        this.run = landLord;
     }
 
-    public UTimer(AIPage page, int position) {
+    public UTimer(AIPage page, int mine, int befor, int next) {
         this.page = page;
-        this.position = position;
+        this.mine = mine;
+        this.befor = befor;
+        this.next = next;
     }
 
     @Override
     public void run() {
-        int befor = Common2.befor(position);
-        int mine = Common2.mine(position);
-        int next = Common2.next(position);
         // TODO: 2020/3/15 主线程 监听信息
         // TODO: 2020/3/15 抢地主
-        while (i > -1 && landLord) {
+        while (i > -1 && run) {
             page.getTime()[1].setText("倒计时:" + i--);
             second(1);// 等一秒
         }
@@ -40,52 +40,56 @@ public class UTimer extends Thread {
         page.getLandlord()[0].setVisible(false);
         page.getLandlord()[1].setVisible(false);
         //设置牌为可点击
-        for (JCard card : page.getUsers().get(position).getPlayers()) {
+        for (JCard card : page.getPlayerList()[mine]) {
             card.setCanClick(true);
         }
         //用户抢地主
-        if (page.getUsers().get(mine).isLord()) {
+        if (page.getLoadLord().get(mine) != null && page.getLoadLord().get(mine)) {
             logger.debug("用户抢地主");
-            // 得到地主牌
-            page.getUsers().get(mine).getPlayers().addAll(page.getLordList());
-            page.getUsers().get(mine).setTurn(true);
             openlord(true);
             second(2);// 等待五秒
             openlord(false);
-            Common2.order(page.getUsers().get(mine).getPlayers());
-            Common2.rePosition(page, page.getUsers().get(mine).getPlayers(), position, position);
-            setLord(mine, position);
-            updateLord(page.getUsers(), mine);
+            // 得到地主牌
+            page.getPlayerList()[mine].addAll(page.getLordList());
+            page.getLordList().clear();
+            page.setTurn(mine);
+            page.setFollow(mine);
+            Common2.order(page.getPlayerList()[mine]);
+            Common2.rePosition(page, page.getPlayerList()[mine], mine, mine);
+            setLord(mine, mine);
         } else {
             // 电脑选地主
             logger.debug("电脑抢地主");
-            if (Common.getScore(page.getUsers().get(Common2.befor(position)).getPlayers())
-                    < Common.getScore(page.getUsers().get(Common2.next(position)).getPlayers())) {
+            if (Common.getScore(page.getPlayerList()[befor])
+                    < Common.getScore(page.getPlayerList()[next])) {
                 page.getTime()[2].setText("抢地主");
                 page.getTime()[2].setVisible(true);
-                setLord(next, position);// 设定地主
+                setLord(next, mine);// 设定地主
                 openlord(true);
                 second(5);
                 openlord(false);
-                page.getUsers().get(next).getPlayers().addAll(page.getLordList());
-                page.getUsers().get(next).setTurn(true);
-                Common.order(page.getUsers().get(next).getPlayers());
-                Common2.rePosition(page, page.getUsers().get(next).getPlayers(), next, position);
-                updateLord(page.getUsers(), next);
+                page.getPlayerList()[next].addAll(page.getLordList());
+                page.getLordList().clear();
+                page.setTurn(next);
+                page.setFollow(next);
+                Common.order(page.getPlayerList()[next]);
+                Common2.rePosition(page, page.getPlayerList()[next], next, mine);
             } else {
                 page.getTime()[0].setText("抢地主");
                 page.getTime()[0].setVisible(true);
-                setLord(befor, position);// 设定地主
+                setLord(befor, mine);// 设定地主
                 openlord(true);
                 second(3);
                 openlord(false);
-                page.getUsers().get(befor).getPlayers().addAll(page.getLordList());
-                page.getUsers().get(befor).setTurn(true);
-                Common.order(page.getUsers().get(befor).getPlayers());
-                Common2.rePosition(page, page.getUsers().get(befor).getPlayers(), befor, position);
-                updateLord(page.getUsers(), befor);
+                page.getPlayerList()[befor].addAll(page.getLordList());
+                page.getLordList().clear();
+                page.setTurn(befor);
+                page.setFollow(befor);
+                Common.order(page.getPlayerList()[befor]);
+                Common2.rePosition(page, page.getPlayerList()[befor], befor, mine);
             }
         }
+        // TODO: 2020/3/16 关闭倒计时窗口
         for (int i = 0; i < 3; i++) {
             page.getTime()[i].setText("不要");
             page.getTime()[i].setVisible(false);
@@ -93,36 +97,47 @@ public class UTimer extends Thread {
         // TODO: 2020/3/15 出牌，直到分出胜负
         while (true) {
             logger.debug("出牌");
-            if (page.getUsers().get(mine).isTurn()) {
+            if (page.getTurn() == mine) {
                 logger.debug("用户自己出牌。。。。。" + mine);
                 // TODO: 2020/3/15 如果轮到自己出牌
                 page.getPublishCard()[0].setVisible(true);
                 page.getPublishCard()[1].setVisible(true);
-                timeWait(30, 1, position);
+                timeWait(10, mine, mine);
+                List<JCard> shows = null;
+                if (page.getFollow() != mine) {
+                    shows = page.getCurrentList()[page.getFollow()];
+                }
+                AIClient client = new AIClient(page.getPlayerList()[mine], shows, page.getLordFlag(), mine);
+                List<JCard> cards = client.plays();
+                showCards(cards, mine, mine);
+                page.getPublishCard()[0].setVisible(false);
+                page.getPublishCard()[1].setVisible(false);
             }
-            if (page.getUsers().get(next).isTurn()) {
+            if (page.getTurn() == next) {
                 logger.debug("下一家用户出牌。。。。。" + next);
-                timeWait(10, 2, position);
+                timeWait(1, next, mine);
                 // TODO: 2020/3/15 如果是下家出牌
-                AIClient client = new AIClient(page.getUsers().get(next), next);
-                List<JCard> cards = client.showCard();
-                showCards(cards, next, position);
+                List<JCard> shows = null;
+                if (page.getFollow() != next) {
+                    shows = page.getCurrentList()[page.getFollow()];
+                }
+                AIClient client = new AIClient(page.getPlayerList()[next], shows, page.getLordFlag(), next);
+                List<JCard> cards = client.plays();
+                showCards(cards, next, mine);
             }
-            if (page.getUsers().get(befor).isTurn()) {
+            if (page.getTurn() == befor) {
                 logger.debug("上一家用户出牌。。。。。" + befor);
                 // TODO: 2020/3/15 如果是上家出牌
-                timeWait(10, 0, position);
+                timeWait(1, befor, befor);
                 // TODO: 2020/3/15 如果是下家出牌
-                AIClient client = new AIClient(page.getUsers().get(befor), befor);
-                List<JCard> cards = client.showCard();
-                showCards(cards, befor, position);
+                List<JCard> shows = null;
+                if (page.getFollow() != befor) {
+                    shows = page.getCurrentList()[page.getFollow()];
+                }
+                AIClient client = new AIClient(page.getPlayerList()[befor], shows, page.getLordFlag(), befor);
+                List<JCard> cards = client.plays();
+                showCards(cards, befor, mine);
             }
-        }
-    }
-
-    public void updateLord(List<User> users, int role) {
-        for (User user : users) {
-            user.setLordRole(role);
         }
     }
 
@@ -157,7 +172,7 @@ public class UTimer extends Thread {
             point.x = 700;
             point.y = 20;
         }
-        page.getUsers().get(i).setLordFlag(true);
+        page.setLordFlag(i);
         page.getLord().setLocation(point);
         page.getLord().setVisible(true);
     }
@@ -175,13 +190,12 @@ public class UTimer extends Thread {
     // 延时，模拟时钟
     public void timeWait(int n, int player, int position) {
         logger.debug("初始化计时器......");
-        int befor = Common2.befor(position);
-        int mine = Common2.mine(position);
-        int next = Common2.next(position);
+        if (page.getCurrentList()[player].size() > 0)
+            Common.hideCards(page.getCurrentList()[player]);
         // 如果是我，10秒到后直接下一家出牌
-        if (player == 1) {
+        if (player == mine) {
             int m = n;
-            while (page.getUsers().get(mine).isTurn() && m >= 0) {
+            while (page.getTurn() == mine && m >= 0) {
                 logger.debug("倒计时" + m);
                 page.getTime()[player].setText("倒计时:" + m);
                 page.getTime()[player].setVisible(true);
@@ -191,9 +205,6 @@ public class UTimer extends Thread {
             if (i == -1) {
                 page.getTime()[1].setText("超时");
             }
-            page.getUsers().get(mine).setTurn(false);
-            page.getUsers().get(next).setTurn(true);
-            page.getUsers().get(next).setFollow(page.getUsers().get(mine).isFollow());
             page.getPublishCard()[0].setVisible(false);
             page.getPublishCard()[1].setVisible(false);
         } else {
@@ -210,34 +221,50 @@ public class UTimer extends Thread {
         int befor = Common2.befor(position);
         int mine = Common2.mine(position);
         int next = Common2.next(position);
-        page.getUsers().get(mine).getShows().clear();
+        // TODO: 2020/3/16 出牌时首先需要清除自己的currentList 
+        page.getCurrentList()[role].clear();
         // 定位出牌
         if (cards.size() > 0) {
             Point point = new Point();
-            if (role == befor)
-                point.x = 300;
-            if (role == next)
-                point.x = 500;
-            point.y = (400 / 2) - (cards.size() + 1) * 15 / 2;// 屏幕中部
-            // 将name转换成Card
-            for (JCard card : cards) {
-                Common.move(card, card.getLocation(), point);
-                point.y += 15;
-                page.getUsers().get((role + 1) % 3).getShows().add(card);
-                page.getUsers().get((role + 1) % 3).setTurn(true);
-                page.getUsers().get(role).setTurn(false);
-                page.getUsers().get(role).getPlayers().remove(card);
+            if (role != mine) {
+                if (role == befor)
+                    point.x = 240;
+                if (role == next)
+                    point.x = 600;
+                point.y = (400 / 2) - (cards.size() + 1) * 15 / 2;// 屏幕中部
+                // 将name转换成Card
+                for (JCard card : cards) {
+                    Common.move(card, card.getLocation(), point);
+                    point.y += 15;
+                }
+                page.getCurrentList()[role].addAll(cards);
+                page.setTurn((role + 1) % 3);
+                page.setFollow(role);
+                page.getPlayerList()[role].removeAll(cards);
+                Common2.rePosition(page, page.getPlayerList()[role], role, position);
+            } else {
+                point.x = (770 / 2) - (cards.size() + 1) * 15 / 2;
+                point.y = 300;
+                for (int i = 0, len = cards.size(); i < len; i++) {
+                    JCard card = cards.get(i);
+                    Common.move(card, card.getLocation(), point);
+                    point.x += 15;
+                }
+                page.getCurrentList()[role].addAll(cards);
+                page.setTurn((role + 1) % 3);
+                page.setFollow(role);
+                page.getPlayerList()[role].removeAll(cards);
+                //重新理牌
+                Common2.rePosition(page, page.getPlayerList()[role], role, position);
             }
-            Common2.rePosition(page, page.getUsers().get(role).getPlayers(), role, position);
         } else {
-            // TODO: 2020/3/15 出牌 
-            page.getUsers().get((role + 1) % 3).getShows().addAll(page.getUsers().get(role - 1).getShows());
-            page.getUsers().get((role + 1) % 3).setTurn(true);
-            page.getUsers().get(role).setTurn(false);
+            // TODO: 2020/3/15 出牌
+            page.setTurn((role + 1) % 3);
             page.getTime()[role].setVisible(true);
             page.getTime()[role].setText("不要");
         }
-        for (JCard card : page.getUsers().get((role + 1) % 3).getShows()) {
+        for (JCard card : page.getCurrentList()[role]) {
+            logger.debug("用户:" + role + " 出牌:" + card.getCard().getColor() + "-" + card.getCard().getNumber());
             card.turnFront();
         }
     }

@@ -1,5 +1,6 @@
 package e.wrod.net.view;
 
+import e.wrod.net.common.Common;
 import e.wrod.net.common.Common2;
 import e.wrod.net.common.NewTimer2;
 import e.wrod.net.common.UTimer;
@@ -22,16 +23,12 @@ import java.util.Vector;
 public class AIPage extends RoomPage implements ActionListener {
     Logger logger = Logger.getLogger(AIPage.class);
 
-    AIPage(User user, List<User> users) {
+    AIPage(User[] users, int mine) {
         //用户信息初始化
         this.user = user;
-        this.users = users;
-        for (int i = 0; i < this.users.size(); i++) {
-            if (user.getUserName().equals(this.users.get(i).getUserName())) {
-                position = i;
-            }
-        }
-        logger.debug("用户位置:" + position);
+        this.mine = mine;
+        this.befor = Common2.befor(mine);
+        this.next = Common2.next(mine);
         //界面出事化
         Init();
         // 设置菜单按钮
@@ -46,7 +43,7 @@ public class AIPage extends RoomPage implements ActionListener {
         time[1].setVisible(true);
         // 设置当前面板可见
         this.setVisible(true);
-        SwingUtilities.invokeLater(new NewTimer2(this, position));
+        SwingUtilities.invokeLater(new NewTimer2(this, mine, befor, next));
     }
 
     public void landLord() {
@@ -111,6 +108,9 @@ public class AIPage extends RoomPage implements ActionListener {
         time[0].setBounds(140, 230, 60, 20);
         time[1].setBounds(374, 360, 60, 20);
         time[2].setBounds(620, 230, 60, 20);
+        for (int i = 0; i < 3; i++) {
+            currentList[i] = new Vector<JCard>();
+        }
     }
 
     // TODO: 2020/3/10 卡片初始化
@@ -152,6 +152,10 @@ public class AIPage extends RoomPage implements ActionListener {
 
     // TODO: 2020/3/12 发牌 如果要考虑 当前客户端用户呢？如何处理呢？
     public void dealCard() {
+        //初始化玩家的牌
+        for (int i = 0; i < 3; i++) {
+            playerList[i] = new ArrayList<JCard>();
+        }
         //初始化地主牌
         lordList = new Vector<JCard>();
         for (int i = 0; i < 54; i++) {
@@ -167,20 +171,20 @@ public class AIPage extends RoomPage implements ActionListener {
                     point = new Point(50, 60 + i * 5);
                     Common2.move(jCards[i], jCards[i].getLocation(), point);
                     //发牌
-                    users.get(Common2.befor(position)).addCard(jCards[i]);
+                    playerList[befor].add(jCards[i]);
                     break;
                 case 1:
                     // TODO: 2020/3/12 玩家2:
                     point = new Point(180 + i * 7, 450);
                     Common2.move(jCards[i], jCards[i].getLocation(), point);
                     jCards[i].turnFront();
-                    users.get(Common2.mine(position)).addCard(jCards[i]);
+                    playerList[mine].add(jCards[i]);
                     break;
                 case 2:
                     //todo 玩家3
                     point = new Point(700, 60 + i * 5);
                     Common2.move(jCards[i], jCards[i].getLocation(), point);
-                    users.get(Common2.next(position)).addCard(jCards[i]);
+                    playerList[next].add(jCards[i]);
                     break;
             }
             container.setComponentZOrder(jCards[i], 0);
@@ -190,8 +194,8 @@ public class AIPage extends RoomPage implements ActionListener {
     public void CardOrder() {
         for (int i = 0; i < 3; i++) {
             logger.debug("对玩家:" + i + " 牌排序");
-            Common2.order(users.get(i).getPlayers());
-            Common2.rePosition(this, users.get(i).getPlayers(), i, position);
+            Common2.order(playerList[i]);
+            Common2.rePosition(this, playerList[i], i, mine);
         }
     }
 
@@ -207,15 +211,14 @@ public class AIPage extends RoomPage implements ActionListener {
         if (e.getSource() == landlord[0]) {
             // TODO: 2020/3/13 抢地主
             logger.debug("抢地主，抢地主。。。。。。。。。。。。");
-            users.get(position).setLord(true);
-            users.get(position).setLordFlag(true);
+            setLordFlag(mine);
             time[1].setText("抢地主");
-            timer.setLoadLord(false);
+            timer.isRun(false);
         }
         if (e.getSource() == landlord[1]) {
             //不抢
             time[1].setText("不抢");
-            timer.setLoadLord(false);
+            timer.isRun(false);
         }
         if (e.getSource() == publishCard[0]) {
             // TODO: 2020/3/15 出牌 
@@ -228,30 +231,22 @@ public class AIPage extends RoomPage implements ActionListener {
     }
 
     public static void main(String[] args) {
-        List<User> users = new ArrayList<>(3);
+        User[] users = new User[3];
         User user = new User();
         //初始化AI1
         user.setUserId(0);
         user.setUserName("AI1");
-        user.setDeposit(false);
-        users.add(user);
+        users[0] = user;
         //初始化AI2
         User user1 = new User();
         user1.setUserId(1);
         user1.setUserName("徐昌");
-        user1.setDeposit(false);
-        users.add(user1);
+        users[1] = user1;
         //初始化AI3
         User user2 = new User();
         user2.setUserId(2);
         user2.setUserName("AI1");
-        user2.setDeposit(false);
-        users.add(user2);
-
-        User user0 = new User();
-        user0.setUserId(0);
-        user0.setUserName("徐昌");
-        user0.setDeposit(false);
-        new AIPage(user0, users);
+        users[2] = user2;
+        new AIPage(users, 1);
     }
 }

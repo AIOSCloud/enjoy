@@ -22,7 +22,7 @@ import java.util.Vector;
 @Data
 public class OffLinePage extends JFrame implements ActionListener {
     private final Logger logger = Logger.getLogger(OffLinePage.class);
-    List<User> user;
+    User[] user;
     Container container = null; //面板容器
     JMenuItem start, exit, about; //界面上面的按钮
     JButton[] landlord = new JButton[2]; //抢地主，抢，不抢的按钮
