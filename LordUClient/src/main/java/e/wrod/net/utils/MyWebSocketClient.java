@@ -15,17 +15,21 @@ public class MyWebSocketClient extends WebSocketClient {
 
     @Override
     public void onOpen(ServerHandshake serverHandshake) {
+        logger.debug("open......");
     }
 
     @Override
     public void onMessage(String s) {
+        logger.debug("on message......");
     }
 
     @Override
     public void onClose(int i, String s, boolean b) {
+        logger.debug("close......");
     }
 
     @Override
     public void onError(Exception e) {
+        logger.debug("onError......");
     }
 }

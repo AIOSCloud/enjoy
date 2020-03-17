@@ -25,7 +25,7 @@ public class ChannelSupervise {
         channelMap.remove(channel.id().asShortText());
     }
 
-    public static Channel finfChannel(String id) {
+    public static Channel findChannel(String id) {
         return globalGroup.find(channelMap.get(id));
     }
 

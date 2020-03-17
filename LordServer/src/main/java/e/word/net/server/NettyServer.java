@@ -1,6 +1,5 @@
 package e.word.net.server;
 
-import e.word.net.Server;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -18,7 +17,7 @@ public class NettyServer {
             bootstrap.group(boss, work);
             bootstrap.channel(NioServerSocketChannel.class);
             bootstrap.childHandler(new NioWebSocketChannelInitializer());
-            Channel channel = bootstrap.bind(18090).sync().channel();
+            Channel channel = bootstrap.bind(8090).sync().channel();
             logger.info("websocket服务器启动成功:" + channel);
             channel.closeFuture().sync();
         } catch (Exception e) {

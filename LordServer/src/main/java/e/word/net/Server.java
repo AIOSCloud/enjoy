@@ -3,8 +3,6 @@ package e.word.net;
 import e.word.net.server.NettyServer;
 import org.apache.log4j.Logger;
 
-import java.awt.event.ActionEvent;
-
 /**
  * 服务器界面
  */
