@@ -7,9 +7,15 @@ import java.util.List;
 
 @Data
 public class Event {
+    String type;
+    int status;
     boolean next;
-    // TODO: 2020/3/17 用户牌 
-    List<Card> players = new ArrayList<>();
-    // TODO: 2020/3/17 用户出牌 
-    List<Card> shows = new ArrayList<>();
+    boolean isLord;
+    int score;
+    User user;
+    List<Card> lordList;
+    // TODO: 2020/3/17 用户牌
+    List<Card> players;
+    // TODO: 2020/3/17 用户出牌
+    List<Card> shows;
 }

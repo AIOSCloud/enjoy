@@ -6,6 +6,5 @@ import lombok.Data;
 public class Message {
     int mainType;
     int extType;
-    User user;
-    Room room;
+    Event event;
 }

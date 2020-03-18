@@ -14,20 +14,24 @@ import java.util.concurrent.ConcurrentMap;
 @Data
 public class Room {
     private Logger logger = Logger.getLogger(Room.class);
+    // TODO: 2020/3/17
+    int readyLord;
     // TODO: 2020/3/16 卡片
     Card[] cards = new Card[54];
-    // TODO: 2020/3/16 房间用户 
-    ConcurrentMap<Integer, User> users;
+    // TODO: 2020/3/16 房间用户对应的channel
+    List<User> users;
     // TODO: 2020/3/16 出牌
-    List<Card>[] showsList = new ArrayList[3];
+    ArrayList[] showsList = new ArrayList[3];
     // TODO: 2020/3/16 玩家牌
-    List<Card> playerList[] = new ArrayList[3];
+    ArrayList[] playerList = new ArrayList[3];
     //地主牌
     List<Card> lordCards;
+    int lordIndex;
+    int turn;
 
     public Room() {
         lordCards = new ArrayList<>(3);
-        users = new ConcurrentHashMap<>(3);
+        users = new ArrayList<>(3);
         for (int i = 0; i < 3; i++) {
             showsList[i] = new ArrayList<Card>();
             playerList[i] = new ArrayList<Card>();

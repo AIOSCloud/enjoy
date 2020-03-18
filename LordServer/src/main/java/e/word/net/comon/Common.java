@@ -37,4 +37,19 @@ public class Common {
         return number;
     }
 
+    //地主牌权值，看是否抢地主
+    public static int getScore(List<Card> list) {
+        int count = 0;
+        for (int i = 0, len = list.size(); i < len; i++) {
+            Card card = list.get(i);
+            if (card.getColor() == 5) {
+                count += 5;
+            }
+            if (card.getNumber() == 2) {
+                count += 2;
+            }
+
+        }
+        return count;
+    }
 }

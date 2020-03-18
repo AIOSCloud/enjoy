@@ -1,7 +1,11 @@
 package e.word.net.handler;
 
+import com.alibaba.fastjson.JSON;
+import e.word.net.buissness.Service;
+import e.word.net.model.Event;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.*;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.util.Date;
@@ -21,9 +25,15 @@ public class WebSocketHandler {
         } else if (frame instanceof TextWebSocketFrame) {
             String request = ((TextWebSocketFrame) frame).text();
             logger.debug("服务端收到:" + request);
-            TextWebSocketFrame tws = new TextWebSocketFrame(new Date().toString()
-                    + ctx.channel().id() + "：" + request);
-            ctx.channel().writeAndFlush(tws);
+            Event event = JSON.parseObject(request, Event.class);
+            if (event.getType().equals("建立链接")) {
+                Service.link(event, ctx.channel().id().asShortText());
+            } else if (event.getType().equals("创建房间")) {
+                Service.createRoom(event);
+            } else if (event.getType().equals("抢地主")) {
+                // TODO: 2020/3/17 抢地主
+                Service.landLord(event);
+            }
         } else {
             logger.debug("本例仅支持文本消息，暂不支持二进制消息");
             TextWebSocketFrame tws = new TextWebSocketFrame(new Date().toString()

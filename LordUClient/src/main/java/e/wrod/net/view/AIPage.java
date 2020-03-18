@@ -37,7 +37,7 @@ public class AIPage extends RoomPage implements ActionListener {
         CardInit();
         washCard();
         dealCard();
-        CardOrder();
+        //CardOrder();
         setImage();
         landLord();
         time[1].setVisible(true);
