@@ -5,7 +5,6 @@ import e.word.net.buissness.Service;
 import e.word.net.model.Event;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.*;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.util.Date;
@@ -33,6 +32,9 @@ public class WebSocketHandler {
             } else if (event.getType().equals("抢地主")) {
                 // TODO: 2020/3/17 抢地主
                 Service.landLord(event);
+            } else if (event.getType().equals("出牌")) {
+                // TODO: 2020/3/18 出牌
+                Service.play(event);
             }
         } else {
             logger.debug("本例仅支持文本消息，暂不支持二进制消息");

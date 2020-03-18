@@ -3,6 +3,7 @@ package e.word.net.common;
 import e.word.net.component.JCard;
 import e.word.net.model.Card;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -10,18 +11,18 @@ import java.util.List;
 
 public class Common {
     //排序
-    public static void order(List<Card> list) {
-        list.sort(new Comparator<Card>() {
+    public static void order(List<JCard> list) {
+        list.sort(new Comparator<JCard>() {
             @Override
-            public int compare(Card c1, Card c2) {
+            public int compare(JCard c1, JCard c2) {
                 return weight(c2) - weight(c1);
             }
         });
     }
 
-    public static int weight(Card card) {
-        int color = card.getColor();
-        int number = card.getNumber();
+    public static int weight(JCard card) {
+        int color = card.getCard().getColor();
+        int number = card.getCard().getNumber();
         if (color == 5 && number == 2) {
             return 100;
         }
@@ -62,6 +63,33 @@ public class Common {
         }
         //位置校准
         card.setLocation(to);
+    }
+
+    //重新定位 flag代表是电脑0，2，或者是我
+    public static void rePosition(JFrame main, List<JCard> list, int flag) {
+        Point p = new Point();
+        if (flag == 0) {//电脑0
+            p.x = 50;
+            p.y = (450 / 2) - (list.size() + 1) * 15 / 2;
+        }
+        if (flag == 1) {//我
+            p.x = (800 / 2) - (list.size() + 1) * 21 / 2;
+            p.y = 450;
+        }
+        if (flag == 2) {
+            p.x = 700;
+            p.y = (450 / 2) - (list.size() + 1) * 15 / 2;
+        }
+        int len = list.size();
+        for (int i = 0; i < len; i++) {
+            JCard card = list.get(i);
+            Common.move(card, card.getLocation(), p);
+            main.getContentPane().setComponentZOrder(card, 0);
+            if (flag == 1)
+                p.x += 21;
+            else
+                p.y += 15;
+        }
     }
 
     public static List<JCard> getJCards(List<Card> cards) {

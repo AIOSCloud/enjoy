@@ -8,7 +8,6 @@ public class Card {
     int number;//牌面数字
 
     public Card() {
-
     }
 
     public Card(int color, int number) {

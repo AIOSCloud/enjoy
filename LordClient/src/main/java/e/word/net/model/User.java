@@ -13,4 +13,5 @@ public class User {
     private int score;
     boolean robot;
     boolean lord;
+    int index;
 }

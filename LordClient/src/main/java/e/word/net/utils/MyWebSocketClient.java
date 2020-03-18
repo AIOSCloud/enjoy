@@ -39,7 +39,9 @@ public class MyWebSocketClient extends WebSocketClient {
             logger.debug("建立连接......");
             page.user = event.getUser();
         } else if (event.getType().equals("发牌")) {
-            logger.debug("发牌......");
+            logger.debug("发牌......" + event.getUser());
+            page.user = event.getUser();
+            page.users = event.getUsers();
             // TODO: 2020/3/17 煮面初始化
             //用户牌
             List<Card> playerCards = event.getPlayers();
@@ -79,22 +81,89 @@ public class MyWebSocketClient extends WebSocketClient {
             }
             page.landlord[0].setVisible(true);
             page.landlord[1].setVisible(true);
+            page.time[1].setVisible(true);
+            int i = 10;
+            while (i >= 0 && page.isRun) {
+                page.second(1);
+                page.time[1].setText("倒计时:" + i--);
+            }
+            if (i == -1) {
+                page.time[1].setText("不抢");
+                page.landlord[0].setVisible(false);
+                page.landlord[1].setVisible(false);
+                // TODO: 2020/3/17 不抢地主
+                Event result = new Event();
+                result.setType("抢地主");
+                result.setLord(false);
+                result.setUser(page.user);
+                this.send(JSON.toJSONString(result));
+            }
+
         } else if (event.getType().equals("地主")) {
+            page.isRun = true;
             //获取地主牌
             List<Card> lordCards = event.getLordList();
             //设置地主
             page.lordFlag = event.getLordIndex();
             page.turn = event.getTurn();
+            page.time[page.lordFlag].setText("抢地主");
+            page.setLord(page.lordFlag);
             for (int i = 0; i < lordCards.size(); i++) {
                 page.lordList.get(i).setCard(lordCards.get(i));
                 page.lordList.get(i).turnFront();
             }
             page.second(5);
             for (JCard card : page.lordList) {
+                card.setCanClick(true);
+                if (page.lordFlag != page.user.getIndex()) {
+                    card.turnRear();
+                }
                 page.players[page.lordFlag].add(card);
             }
             Common.order(page.players[page.lordFlag]);
-
+            Common.rePosition(page, page.players[page.lordFlag], page.lordFlag);
+            if (page.turn == page.user.getIndex()) {
+                page.publishCard[0].setVisible(true);
+                page.publishCard[1].setVisible(true);
+            }
+            page.time[page.turn].setVisible(true);
+            int i = 30;
+            while (i >= 0 && page.isRun) {
+                page.second(1);
+                page.time[page.turn].setText("倒计时:" + i--);
+            }
+            if (i == -1) {
+                page.time[page.turn].setText("不要");
+                if (page.turn == page.user.getIndex()) {
+                    page.publishCard[0].setVisible(false);
+                    page.publishCard[1].setVisible(false);
+                }
+                // TODO: 2020/3/18 发送出牌消息
+                Event result = new Event();
+                result.setType("出牌");
+            }
+        } else if (event.getType().equals("出牌")) {
+            page.turn = event.getTurn();
+            // TODO: 2020/3/18 获取用户出的牌
+            page.publishCard[0].setVisible(false);
+            page.publishCard[1].setVisible(false);
+            List<Card> showCards = event.getShows();
+            page.shows[1].clear();
+            int i = 30;
+            while (i >= 0 && page.isRun) {
+                page.second(1);
+                page.time[1].setText("倒计时:" + i--);
+            }
+            if (i == -1) {
+                page.time[page.turn].setText("不要");
+                if (page.turn == page.user.getIndex()) {
+                    page.publishCard[0].setVisible(false);
+                    page.publishCard[1].setVisible(false);
+                }
+                // TODO: 2020/3/18 发送出牌消息
+                Event result = new Event();
+                result.setType("出牌");
+            }
         }
     }
 

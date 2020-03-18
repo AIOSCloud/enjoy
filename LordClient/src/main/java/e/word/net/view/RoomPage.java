@@ -32,10 +32,12 @@ public class RoomPage extends JFrame implements ActionListener {
     public JCard jCards[] = new JCard[54];
     public List<JCard> lordList = new ArrayList<JCard>();
     public List<JCard>[] players = new ArrayList[3];
+    public List<JCard>[] shows = new ArrayList[3];
     //地主标签
     public JLabel lord;
     public int lordFlag;
     public int turn;
+    public boolean isRun = true;
 
     public RoomPage(User user) {
         this.user = user;
@@ -47,6 +49,7 @@ public class RoomPage extends JFrame implements ActionListener {
         setMenu();
         //设置页面信息
         setPage();
+        setImage();
         // TODO: 2020/3/17 链接初始化
         // TODO: 2020/3/17 牌面初始化
         CardInit();
@@ -90,6 +93,7 @@ public class RoomPage extends JFrame implements ActionListener {
 
         for (int i = 0; i < 3; i++) {
             players[i] = new ArrayList<>();
+            shows[i] = new ArrayList<>();
         }
     }
 
@@ -139,6 +143,13 @@ public class RoomPage extends JFrame implements ActionListener {
         time[2].setBounds(620, 230, 60, 20);
     }
 
+    public void setImage() {
+        lord = new JLabel(new ImageIcon(ClassLoader.getSystemResource("images/card/dizhu.gif")));
+        lord.setVisible(false);
+        lord.setSize(40, 40);
+        container.add(lord);
+    }
+
     public void CardInit() {
         int count = 0;
         for (int i = 1; i <= 5; i++) {
@@ -177,9 +188,33 @@ public class RoomPage extends JFrame implements ActionListener {
         }
     }
 
+    // 设定地主
+    public void setLord(int i) {
+        Point point = new Point();
+        if (i == 1)// 我是地主
+        {
+            point.x = 80;
+            point.y = 430;
+        }
+        if (i == 0) {
+            point.x = 80;
+            point.y = 20;
+        }
+        if (i == 2) {
+            point.x = 700;
+            point.y = 20;
+        }
+        lord.setLocation(point);
+        lord.setVisible(true);
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == landlord[0]) {
+            isRun = false;
+            landlord[0].setVisible(false);
+            landlord[1].setVisible(false);
+            time[1].setText("抢地主");
             // TODO: 2020/3/17 抢地主
             Event event = new Event();
             event.setType("抢地主");
@@ -188,12 +223,22 @@ public class RoomPage extends JFrame implements ActionListener {
             ws.send(JSON.toJSONString(event));
         }
         if (e.getSource() == landlord[1]) {
+            isRun = false;
+            landlord[0].setVisible(false);
+            landlord[1].setVisible(false);
+            time[1].setText("不要");
             // TODO: 2020/3/17 不抢
             Event event = new Event();
             event.setType("抢地主");
             event.setLord(false);
             event.setUser(user);
             ws.send(JSON.toJSONString(event));
+        }
+        if (e.getSource() == publishCard[0]) {
+            // TODO: 2020/3/18 出牌 
+        }
+        if (e.getSource() == publishCard[1]) {
+            // TODO: 2020/3/18 不要 
         }
     }
 }

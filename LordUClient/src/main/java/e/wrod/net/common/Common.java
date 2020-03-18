@@ -25,7 +25,6 @@ public class Common {
     public static int weight(JCard card) {
         int color = card.getCard().getColor();
         int number = card.getCard().getNumber();
-        //��������Ļ�
         if (color == 5 && number == 2) {
             return 100;
         }

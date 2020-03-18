@@ -2,6 +2,7 @@ package e.word.net.buissness;
 
 import com.alibaba.fastjson.JSON;
 import e.word.net.comon.Common;
+import e.word.net.model.Card;
 import e.word.net.model.Event;
 import e.word.net.model.Room;
 import e.word.net.model.User;
@@ -83,12 +84,13 @@ public class Service {
                 result.setLordList(room.getLordCards());
                 result.setPlayers(room.getPlayerList()[i]);
                 user = room.getUsers().get(i);
+                user.setIndex(i);
                 result.setUser(user);
-                //result.setUsers(room.getUsers());
+                result.setUsers(room.getUsers());
                 house.put(user.getUserId(), room);
                 if (!user.isRobot()) {
                     TextWebSocketFrame tws = new TextWebSocketFrame(JSON.toJSONString(result));
-                    ChannelSupervise.findChannel(room.getUsers().get(i).getUserId()).writeAndFlush(tws);
+                    ChannelSupervise.findChannel(user.getUserId()).writeAndFlush(tws);
                 }
             }
         }
@@ -114,6 +116,8 @@ public class Service {
                 room.setTurn(1);
                 result.setLordIndex(1);
                 result.setTurn(1);
+                // TODO: 2020/3/18 地主牌
+                room.getPlayerList()[1].addAll(room.getLordCards());
             } else {
                 // TODO: 2020/3/18 用户不抢地主 地主判定
                 if (Common.getScore(room.getPlayerList()[0]) > Common.getScore(room.getPlayerList()[2])) {
@@ -122,9 +126,11 @@ public class Service {
                     room.setTurn(0);
                     result.setLordIndex(0);
                     result.setTurn(1);
+                    room.getPlayerList()[0].addAll(room.getLordCards());
                 } else {
                     room.setLordIndex(2);
                     room.setTurn(2);
+                    room.getPlayerList()[1].addAll(room.getLordCards());
                 }
             }
             for (User u : users) {
@@ -137,7 +143,30 @@ public class Service {
     /**
      * 玩牌
      */
-    public static void play() {
+    public static void play(Event event) {
+        //获取用户信息，获取用户位置
+        User user = new User();
+        //获取出的牌
+        List<Card> shows = event.getShows();
+        // TODO: 2020/3/18 获取房间信息
+        Room room = house.get(user.getUserId());
+        // TODO: 2020/3/18 获取下家用户信息
+        User next = room.getUsers().get((user.getIndex() + 1) % 3);
+        //移除玩家出的牌
+        room.getPlayerList()[user.getIndex()].removeAll(shows);
+        Common.order(room.getPlayerList()[user.getIndex()]);
+        room.getShowsList()[user.getIndex()].clear();
+        room.getShowsList()[user.getIndex()].addAll(shows);
 
+        Event result = new Event();
+        result.setType("出牌");
+        result.setUser(next);
+        //设置出牌
+        result.setPlayers(room.getPlayerList()[(next.getIndex() + 1) % 3]);
+        //上家出牌发送给下家
+        result.getShows().addAll(shows);
+        // TODO: 2020/3/18 发送上家出的牌给下家
+        TextWebSocketFrame tws = new TextWebSocketFrame(JSON.toJSONString(result));
+        ChannelSupervise.findChannel(next.getUserId()).writeAndFlush(tws);
     }
 }
