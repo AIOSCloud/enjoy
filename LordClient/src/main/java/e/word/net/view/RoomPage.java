@@ -184,6 +184,7 @@ public class RoomPage extends JFrame implements ActionListener {
             Event event = new Event();
             event.setType("抢地主");
             event.setLord(true);
+            event.setUser(user);
             ws.send(JSON.toJSONString(event));
         }
         if (e.getSource() == landlord[1]) {
@@ -191,6 +192,7 @@ public class RoomPage extends JFrame implements ActionListener {
             Event event = new Event();
             event.setType("抢地主");
             event.setLord(false);
+            event.setUser(user);
             ws.send(JSON.toJSONString(event));
         }
     }
