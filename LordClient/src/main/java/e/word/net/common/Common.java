@@ -5,9 +5,38 @@ import e.word.net.model.Card;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class Common {
+    //排序
+    public static void order(List<Card> list) {
+        list.sort(new Comparator<Card>() {
+            @Override
+            public int compare(Card c1, Card c2) {
+                return weight(c2) - weight(c1);
+            }
+        });
+    }
+
+    public static int weight(Card card) {
+        int color = card.getColor();
+        int number = card.getNumber();
+        if (color == 5 && number == 2) {
+            return 100;
+        }
+        if (color == 5 && number == 1) {
+            return 90;
+        }
+        if (color < 5 && number == 2) {
+            return 80;
+        }
+        if (color < 5 && number == 1) {
+            return 70;
+        }
+        return number;
+    }
+
     //移动效果的函数，用于发牌
     public static void move(JCard card, Point from, Point to) {
         if (to.x != from.x) {

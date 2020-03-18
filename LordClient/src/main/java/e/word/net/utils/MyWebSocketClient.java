@@ -88,10 +88,13 @@ public class MyWebSocketClient extends WebSocketClient {
             for (int i = 0; i < lordCards.size(); i++) {
                 page.lordList.get(i).setCard(lordCards.get(i));
                 page.lordList.get(i).turnFront();
-                // TODO: 2020/3/18 地主牌假如到地主端
             }
-            // TODO: 2020/3/18 地主牌假如到个客户端
-            page.players[page.lordFlag].addAll(page.lordList);
+            page.second(5);
+            for (JCard card : page.lordList) {
+                page.players[page.lordFlag].add(card);
+            }
+            Common.order(page.players[page.lordFlag]);
+
         }
     }
 
