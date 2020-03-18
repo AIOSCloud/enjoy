@@ -16,12 +16,16 @@ public class AIPlayer {
     // TODO: 2020/3/17 出牌
     List<Card> shows;
     // TODO: 2020/3/17 地主为下家
-    boolean next;
+    int lordIndex;
+    int mineIndex;
+    boolean follow;
 
-    public AIPlayer(List<Card> players, List<Card> shows, boolean next) {
+    public AIPlayer(List<Card> players, List<Card> shows, int mineIndex, int lordIndex, boolean follow) {
         this.players = players;
         this.shows = shows;
-        this.next = next;
+        this.mineIndex = mineIndex;
+        this.lordIndex = lordIndex;
+        this.follow = follow;
     }
 
     public List<Card> play() {
@@ -29,7 +33,7 @@ public class AIPlayer {
         // 待走的牌
         List<Card> cards = new ArrayList<>();
         // 如果是主动出牌
-        if (shows == null || shows.size() == 0) {
+        if (!follow) {
             // 有单出单 (除开3带，飞机能带的单牌)
             if (model.getA1().size() > (model.getA111222().size() * 2 + model.getA3().size())) {
                 logger.debug("有单牌就出单牌" + model.getA1().size());
@@ -98,49 +102,49 @@ public class AIPlayer {
             logger.debug("判断出牌的类型为:" + cType);
             //如果是单牌
             if (cType == CardType.c1) {
-                AI_1(model.a1, shows, cards, next);
+                AI_1(model.a1, shows, cards, mineIndex, lordIndex);
             }//如果是对子
             else if (cType == CardType.c2) {
-                AI_1(model.a2, shows, cards, next);
+                AI_1(model.a2, shows, cards, mineIndex, lordIndex);
             }//3带
             else if (cType == CardType.c3) {
-                AI_1(model.a3, shows, cards, next);
+                AI_1(model.a3, shows, cards, mineIndex, lordIndex);
             }//炸弹
             else if (cType == CardType.c4) {
-                AI_1(model.a4, shows, cards, next);
+                AI_1(model.a4, shows, cards, mineIndex, lordIndex);
             }//如果是3带1
             else if (cType == CardType.c31) {
                 //偏家 涉及到拆牌
                 //if((role+1)%3==main.dizhuFlag)
-                AI_2(model.a3, model.a1, shows, cards, next);
+                AI_2(model.a3, model.a1, shows, cards, mineIndex, lordIndex);
             }//如果是3带2
             else if (cType == CardType.c32) {
                 //偏家
                 //if((role+1)%3==main.dizhuFlag)
-                AI_2(model.a3, model.a2, shows, cards, next);
+                AI_2(model.a3, model.a2, shows, cards, mineIndex, lordIndex);
             }//如果是4带11
             else if (cType == CardType.c411) {
-                AI_5(model.a4, model.a1, shows, cards, next);
+                AI_5(model.a4, model.a1, shows, cards, mineIndex, lordIndex);
             }
             //如果是4带22
             else if (cType == CardType.c422) {
-                AI_5(model.a4, model.a2, shows, cards, next);
+                AI_5(model.a4, model.a2, shows, cards, mineIndex, lordIndex);
             }
             //顺子
             else if (cType == CardType.c123) {
-                AI_3(model.a123, shows, cards, next);
+                AI_3(model.a123, shows, cards, mineIndex, lordIndex);
             }
             //双顺
             else if (cType == CardType.c1122) {
-                AI_3(model.a112233, shows, cards, next);
+                AI_3(model.a112233, shows, cards, mineIndex, lordIndex);
             }
             //飞机带单
             else if (cType == CardType.c11122234) {
-                AI_4(model.a111222, model.a1, shows, cards, next);
+                AI_4(model.a111222, model.a1, shows, cards, mineIndex, lordIndex);
             }
             //飞机带对
             else if (cType == CardType.c1112223344) {
-                AI_4(model.a111222, model.a2, shows, cards, next);
+                AI_4(model.a111222, model.a2, shows, cards, mineIndex, lordIndex);
             }
             //炸弹
             if (cards.size() == 0) {
@@ -154,7 +158,7 @@ public class AIPlayer {
     }
 
     //顺子
-    public void AI_3(List<List<Card>> model, List<Card> shows, List<Card> list, boolean next) {
+    public void AI_3(List<List<Card>> model, List<Card> shows, List<Card> list, int mineIndex, int lordIndex) {
         for (int i = 0, len = model.size(); i < len; i++) {
             List<Card> flow = model.get(i);
             if (flow.size() == shows.size() && Common.getValue(model.get(i).get(0)) > Common.getValue(shows.get(0))) {
@@ -165,7 +169,7 @@ public class AIPlayer {
     }
 
     //飞机带单，双
-    public void AI_4(List<List<Card>> model1, List<List<Card>> model2, List<Card> shows, List<Card> list, boolean next) {
+    public void AI_4(List<List<Card>> model1, List<List<Card>> model2, List<Card> shows, List<Card> list, int mineIndex, int lordIndex) {
         //排序按重复数
         Common.order(shows);
         int len1 = model1.size();
@@ -185,7 +189,7 @@ public class AIPlayer {
     }
 
     //4带1，2
-    public void AI_5(List<List<Card>> model1, List<List<Card>> model2, List<Card> shows, List<Card> list, boolean next) {
+    public void AI_5(List<List<Card>> model1, List<List<Card>> model2, List<Card> shows, List<Card> list, int lordIndex, int mineIndex) {
         //排序按重复数
         Common.order(shows);
         int len1 = model1.size();
@@ -203,9 +207,9 @@ public class AIPlayer {
     }
 
     //单牌，对子，3个，4个,通用
-    public void AI_1(List<List<Card>> model, List<Card> shows, List<Card> list, boolean next) {
+    public void AI_1(List<List<Card>> model, List<Card> shows, List<Card> list, int mineIndex, int lordIndex) {
         //顶家
-        if (next) {
+        if ((mineIndex + 1) % 3 == lordIndex) {
             logger.debug("地主为下家");
             for (List<Card> cards : model) {
                 // TODO: 2020/3/15 出小的
@@ -227,7 +231,7 @@ public class AIPlayer {
     }
 
     //3带1,2,4带1,2
-    public void AI_2(List<List<Card>> model1, List<List<Card>> model2, List<Card> shows, List<Card> cards, boolean next) {
+    public void AI_2(List<List<Card>> model1, List<List<Card>> model2, List<Card> shows, List<Card> cards, int mineIndex, int lordIndex) {
         //model1是主牌,model2是带牌,player是玩家出的牌,list是准备回的牌
         int len1 = model1.size();
         int len2 = model2.size();

@@ -37,6 +37,9 @@ public class RoomPage extends JFrame implements ActionListener {
     public JLabel lord;
     public int lordFlag;
     public int turn;
+    public int mine;
+    // TODO: 2020/3/18 跟牌的上家
+    public int showIndex;
     public boolean isRun = true;
 
     public RoomPage(User user) {
@@ -173,6 +176,7 @@ public class RoomPage extends JFrame implements ActionListener {
             second(1);
             logger.debug("链接初始化中，请稍后.....");
         }
+        logger.debug("创建房间请求......" + user);
         Event event = new Event();
         event.setUser(user);
         event.setOnline(false);
@@ -226,7 +230,7 @@ public class RoomPage extends JFrame implements ActionListener {
             isRun = false;
             landlord[0].setVisible(false);
             landlord[1].setVisible(false);
-            time[1].setText("不要");
+            time[1].setText("不抢");
             // TODO: 2020/3/17 不抢
             Event event = new Event();
             event.setType("抢地主");
@@ -235,10 +239,20 @@ public class RoomPage extends JFrame implements ActionListener {
             ws.send(JSON.toJSONString(event));
         }
         if (e.getSource() == publishCard[0]) {
-            // TODO: 2020/3/18 出牌 
+            // TODO: 2020/3/18 出牌
+
         }
         if (e.getSource() == publishCard[1]) {
-            // TODO: 2020/3/18 不要 
+            // TODO: 2020/3/18 不要
+            isRun = false;
+            turn = (turn + 1) % 3;
+            time[1].setText("不要");
+            publishCard[0].setVisible(false);
+            publishCard[1].setVisible(false);
+            Event event = new Event();
+            event.setType("出牌");
+            event.setUser(user);
+            ws.send(JSON.toJSONString(event));
         }
     }
 }

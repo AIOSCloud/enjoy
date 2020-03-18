@@ -92,12 +92,10 @@ public class Common {
         }
     }
 
-    public static List<JCard> getJCards(List<Card> cards) {
+    public static List<JCard> getJCards(List<JCard> players, List<Card> cards) {
         List<JCard> jCards = new ArrayList<>(cards.size());
         for (Card card : cards) {
             JCard jCard = new JCard(card, true);
-            // TODO: 2020/3/17 设置可点击
-            jCards.add(jCard);
         }
         return jCards;
     }

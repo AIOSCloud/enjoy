@@ -84,8 +84,8 @@ public class MyWebSocketClient extends WebSocketClient {
             page.time[1].setVisible(true);
             int i = 10;
             while (i >= 0 && page.isRun) {
-                page.second(1);
                 page.time[1].setText("倒计时:" + i--);
+                page.second(1);
             }
             if (i == -1) {
                 page.time[1].setText("不抢");
@@ -106,6 +106,7 @@ public class MyWebSocketClient extends WebSocketClient {
             //设置地主
             page.lordFlag = event.getLordIndex();
             page.turn = event.getTurn();
+            page.time[page.lordFlag].setVisible(true);
             page.time[page.lordFlag].setText("抢地主");
             page.setLord(page.lordFlag);
             for (int i = 0; i < lordCards.size(); i++) {
@@ -127,10 +128,10 @@ public class MyWebSocketClient extends WebSocketClient {
                 page.publishCard[1].setVisible(true);
             }
             page.time[page.turn].setVisible(true);
-            int i = 30;
+           /* int i = 30;
             while (i >= 0 && page.isRun) {
-                page.second(1);
                 page.time[page.turn].setText("倒计时:" + i--);
+                page.second(1);
             }
             if (i == -1) {
                 page.time[page.turn].setText("不要");
@@ -141,18 +142,49 @@ public class MyWebSocketClient extends WebSocketClient {
                 // TODO: 2020/3/18 发送出牌消息
                 Event result = new Event();
                 result.setType("出牌");
-            }
+            }*/
         } else if (event.getType().equals("出牌")) {
-            page.turn = event.getTurn();
+            page.isRun = false;
             // TODO: 2020/3/18 获取用户出的牌
-            page.publishCard[0].setVisible(false);
-            page.publishCard[1].setVisible(false);
-            List<Card> showCards = event.getShows();
-            page.shows[1].clear();
+            page.publishCard[0].setVisible(true);
+            page.publishCard[1].setVisible(true);
+            page.turn = event.getTurn();
+            page.mine = event.getIndex();
+            page.showIndex = event.getShowIndex();
+            page.shows[page.showIndex].clear();
+            for (int i = 0; i < event.getShows().size(); i++) {
+                page.players[page.showIndex].get(i).setCard(event.getShows().get(i));
+                page.shows[page.showIndex].add(page.players[page.showIndex].get(i));
+            }
+            if (page.shows[page.showIndex].size() > 0) {
+                Point point = new Point();
+                if (page.showIndex != 1) {
+                    if (page.showIndex == 0) {
+                        point.x = 240;
+                    } else {
+                        point.x = 600;
+                    }
+                    point.y = (400 / 2) - (page.shows[page.showIndex].size() + 1) * 15 / 2;// 屏幕中部
+                    for (JCard card : page.shows[page.showIndex]) {
+                        card.turnFront();
+                        Common.move(card, card.getLocation(), point);
+                        point.y += 15;
+                    }
+                    for (int i = 0; i < page.shows[page.showIndex].size(); i++) {
+                        page.players[page.showIndex].remove(i);
+                    }
+                    Common.rePosition(page, page.players[page.showIndex], page.showIndex);
+                }
+            } else {
+                page.time[page.showIndex].setVisible(true);
+                page.time[page.showIndex].setText("不要");
+
+            }
+            //展示出牌到页面
             int i = 30;
             while (i >= 0 && page.isRun) {
-                page.second(1);
                 page.time[1].setText("倒计时:" + i--);
+                page.second(1);
             }
             if (i == -1) {
                 page.time[page.turn].setText("不要");

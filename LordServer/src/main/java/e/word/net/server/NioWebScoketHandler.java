@@ -1,5 +1,6 @@
 package e.word.net.server;
 
+import e.word.net.buissness.Service;
 import e.word.net.handler.HttpHandler;
 import e.word.net.handler.WebSocketHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -37,6 +38,7 @@ public class NioWebScoketHandler extends SimpleChannelInboundHandler<Object> {
         //断开链接
         logger.debug("客户端退出:" + ctx.channel());
         ChannelSupervise.removeChannel(ctx.channel());
+        Service.house.clear();
     }
 
     @Override
