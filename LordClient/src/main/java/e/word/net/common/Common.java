@@ -99,4 +99,12 @@ public class Common {
         }
         return jCards;
     }
+
+    public static List<Card> getCards(List<JCard> jCards) {
+        List<Card> cards = new ArrayList<>();
+        for (JCard jCard : jCards) {
+            cards.add(jCard.getCard());
+        }
+        return cards;
+    }
 }

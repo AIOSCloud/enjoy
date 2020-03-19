@@ -31,4 +31,6 @@ public class Event {
     // TODO: 2020/3/17 用户出牌
     List<Card> shows;
     int showIndex;
+    //出牌上家信息
+    int lastIndex;
 }

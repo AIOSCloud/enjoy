@@ -87,6 +87,7 @@ public class Service {
                 user.setIndex(i);
                 result.setUser(user);
                 result.setUsers(room.getUsers());
+                result.setIndex(i);
                 house.put(user.getUserId(), room);
                 if (!user.isRobot()) {
                     TextWebSocketFrame tws = new TextWebSocketFrame(JSON.toJSONString(result));
@@ -119,7 +120,6 @@ public class Service {
                 // TODO: 2020/3/18 设置返回客户端信息
                 result.setLordIndex(1);
                 result.setTurn(1);
-                result.setIndex(1);
                 // TODO: 2020/3/18 地主牌
                 room.getPlayerList()[1].addAll(room.getLordCards());
                 Common.order(room.getPlayerList()[1]);
@@ -132,7 +132,6 @@ public class Service {
                     //返回客户端信息
                     result.setLordIndex(0);
                     result.setTurn(0);
-                    result.setIndex(0);
                     //房间信息跟新
                     room.getPlayerList()[0].addAll(room.getLordCards());
                     Common.order(room.getPlayerList()[0]);
@@ -144,10 +143,10 @@ public class Service {
                     //返回客户端信息
                     result.setLordIndex(2);
                     result.setTurn(2);
-                    result.setIndex(2);
                 }
             }
             for (int i = 0; i < users.size(); i++) {
+                result.setIndex(i);
                 result.setUser(users.get(i));
                 result.setPlayers(room.getPlayerList()[i]);
                 TextWebSocketFrame tws = new TextWebSocketFrame(JSON.toJSONString(result));
@@ -168,38 +167,40 @@ public class Service {
         User user = event.getUser();
         //获取出的牌
         List<Card> shows = event.getShows();
-        int index = event.getShowIndex();
+        int showIndex = event.getShowIndex();
+        int index = event.getIndex();
         // TODO: 2020/3/18 获取房间信息
         Room room = house.get(user.getUserId());
-        // TODO: 2020/3/18 获取下家用户信息
-        User next = room.getUsers().get((index + 1) % 3);
+        List<User> users = room.getUsers();
         // TODO: 2020/3/18 更新房间信息
         //移除玩家出的牌
         room.setTurn((index + 1) % 3);
+        // 判断自己是否出牌
+        if (showIndex == index) {
+            //更新房间信息
+            room.getPlayerList()[index].removeAll(shows);
+            //重新排序
+            Common.order(room.getPlayerList()[index]);
+            // 保存玩家本次出牌
+            room.getShowsList()[index].clear();
+            room.getShowsList()[index].addAll(shows);
+        }
+        // TODO: 2020/3/19 如果自己出牌
         // TODO: 2020/3/18 组装消息发送到下家
         Event result = new Event();
         result.setType("出牌");
-        result.setUser(next);
         // 发送下一个玩家的牌
-        result.setPlayers(room.getPlayerList()[(index + 1) % 3]);
-        //上家出牌发送给下家
-        if (shows != null && shows.size() > 0) {
-            result.setShows(shows);
-            room.getPlayerList()[index].removeAll(shows);
-            //重新排序
-            Common.order(room.getPlayerList()[user.getIndex()]);
-            // 保存玩家本次出牌
-            room.getShowsList()[user.getIndex()].clear();
-            room.getShowsList()[user.getIndex()].addAll(shows);
-        } else {
-            result.setShows(room.getShowsList()[(index + 2) % 3]);
-            result.setShowIndex((index + 2) % 3);
-        }
+        result.setShows(shows);
+        result.setShowIndex(showIndex);
         result.setTurn((index + 1) % 3);
-        result.setIndex((index + 1) % 3);
         result.setLordIndex(room.getLordIndex());
-        // TODO: 2020/3/18 发送上家出的牌给下家
-        TextWebSocketFrame tws = new TextWebSocketFrame(JSON.toJSONString(result));
-        ChannelSupervise.findChannel(next.getUserId()).writeAndFlush(tws);
+        for (int i = 0; i < users.size(); i++) {
+            result.setIndex(i);
+            result.setUser(users.get(i));
+            result.setPlayers(room.getPlayerList()[i]);
+            // TODO: 2020/3/18 发送上家出的牌给下家
+            TextWebSocketFrame tws = new TextWebSocketFrame(JSON.toJSONString(result));
+            ChannelSupervise.findChannel(users.get(i).getUserId()).writeAndFlush(tws);
+        }
     }
 }

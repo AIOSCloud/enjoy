@@ -1,11 +1,13 @@
 package e.word.net.view;
 
 import com.alibaba.fastjson.JSON;
+import e.word.net.common.Common;
 import e.word.net.component.JCard;
 import e.word.net.model.Card;
 import e.word.net.model.Event;
 import e.word.net.model.User;
 import e.word.net.utils.MyWebSocketClient;
+import e.word.net.utils.Time;
 import org.apache.log4j.Logger;
 import org.java_websocket.WebSocket;
 
@@ -40,7 +42,9 @@ public class RoomPage extends JFrame implements ActionListener {
     public int mine;
     // TODO: 2020/3/18 跟牌的上家
     public int showIndex;
+    public int lastShowIndex;
     public boolean isRun = true;
+    public Time t;
 
     public RoomPage(User user) {
         this.user = user;
@@ -215,7 +219,7 @@ public class RoomPage extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == landlord[0]) {
-            isRun = false;
+            t.isRun = false;
             landlord[0].setVisible(false);
             landlord[1].setVisible(false);
             time[1].setText("抢地主");
@@ -227,7 +231,7 @@ public class RoomPage extends JFrame implements ActionListener {
             ws.send(JSON.toJSONString(event));
         }
         if (e.getSource() == landlord[1]) {
-            isRun = false;
+            t.isRun = false;
             landlord[0].setVisible(false);
             landlord[1].setVisible(false);
             time[1].setText("不抢");
@@ -244,15 +248,20 @@ public class RoomPage extends JFrame implements ActionListener {
         }
         if (e.getSource() == publishCard[1]) {
             // TODO: 2020/3/18 不要
-            isRun = false;
+            t.isRun = false;
             turn = (turn + 1) % 3;
             time[1].setText("不要");
             publishCard[0].setVisible(false);
             publishCard[1].setVisible(false);
-            Event event = new Event();
-            event.setType("出牌");
-            event.setUser(user);
-            ws.send(JSON.toJSONString(event));
+            //出牌
+            Event result = new Event();
+            result.setType("出牌");
+            result.setUser(user);
+            //没出牌
+            result.setShows(Common.getCards(shows[showIndex]));
+            result.setShowIndex(showIndex);
+            result.setIndex(mine);
+            ws.send(JSON.toJSONString(result));
         }
     }
 }

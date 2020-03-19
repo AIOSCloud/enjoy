@@ -1,12 +1,10 @@
 package e.word.net.utils;
 
 import com.alibaba.fastjson.JSON;
-import com.sun.security.auth.NTDomainPrincipal;
 import e.word.net.common.Common;
 import e.word.net.component.JCard;
 import e.word.net.model.Card;
 import e.word.net.model.Event;
-import e.word.net.view.LoginPage;
 import e.word.net.view.RoomPage;
 import org.apache.log4j.Logger;
 import org.java_websocket.client.WebSocketClient;
@@ -42,6 +40,8 @@ public class MyWebSocketClient extends WebSocketClient {
             logger.debug("发牌......" + event.getUser());
             page.user = event.getUser();
             page.users = event.getUsers();
+            page.mine = event.getIndex();
+            logger.debug("当前用户位置:" + page.mine);
             // TODO: 2020/3/17 煮面初始化
             //用户牌
             List<Card> playerCards = event.getPlayers();
@@ -81,26 +81,13 @@ public class MyWebSocketClient extends WebSocketClient {
             }
             page.landlord[0].setVisible(true);
             page.landlord[1].setVisible(true);
-            page.time[1].setVisible(true);
-            int i = 10;
-            while (i >= 0 && page.isRun) {
-                page.time[1].setText("倒计时:" + i--);
-                page.second(1);
-            }
-            if (i == -1) {
-                page.time[1].setText("不抢");
-                page.landlord[0].setVisible(false);
-                page.landlord[1].setVisible(false);
-                // TODO: 2020/3/17 不抢地主
-                Event result = new Event();
-                result.setType("抢地主");
-                result.setLord(false);
-                result.setUser(page.user);
-                this.send(JSON.toJSONString(result));
-            }
-
+            page.time[page.mine].setVisible(true);
+            //抢地主计时 线程
+            page.t = new Time(page, this, true, true);
+            page.t.start();
         } else if (event.getType().equals("地主")) {
-            page.isRun = true;
+            logger.debug("跟新地主信息......");
+            page.lastShowIndex = -1;
             //获取地主牌
             List<Card> lordCards = event.getLordList();
             //设置地主
@@ -123,80 +110,68 @@ public class MyWebSocketClient extends WebSocketClient {
             }
             Common.order(page.players[page.lordFlag]);
             Common.rePosition(page, page.players[page.lordFlag], page.lordFlag);
-            if (page.turn == page.user.getIndex()) {
+            if (page.turn == event.getTurn()) {
                 page.publishCard[0].setVisible(true);
                 page.publishCard[1].setVisible(true);
             }
             page.time[page.turn].setVisible(true);
-           /* int i = 30;
-            while (i >= 0 && page.isRun) {
-                page.time[page.turn].setText("倒计时:" + i--);
-                page.second(1);
-            }
-            if (i == -1) {
-                page.time[page.turn].setText("不要");
-                if (page.turn == page.user.getIndex()) {
-                    page.publishCard[0].setVisible(false);
-                    page.publishCard[1].setVisible(false);
-                }
-                // TODO: 2020/3/18 发送出牌消息
-                Event result = new Event();
-                result.setType("出牌");
-            }*/
+            Time time = new Time(page, this, true, false);
+            time.start();
         } else if (event.getType().equals("出牌")) {
-            page.isRun = false;
-            // TODO: 2020/3/18 获取用户出的牌
-            page.publishCard[0].setVisible(true);
-            page.publishCard[1].setVisible(true);
-            page.turn = event.getTurn();
-            page.mine = event.getIndex();
-            page.showIndex = event.getShowIndex();
-            page.shows[page.showIndex].clear();
-            for (int i = 0; i < event.getShows().size(); i++) {
-                page.players[page.showIndex].get(i).setCard(event.getShows().get(i));
-                page.shows[page.showIndex].add(page.players[page.showIndex].get(i));
+            logger.debug("y用户出牌，更新界面信息......");
+            page.t.isRun = false;
+            int turn = event.getTurn();
+            int mineIndex = event.getIndex();
+            int lordIndex = event.getLordIndex();
+            int showIndex = event.getShowIndex();
+            //判断界面是否更新
+            //更新界面信息
+            page.turn = turn;
+            page.mine = mineIndex;
+            page.showIndex = showIndex;
+            List<Card> showsCards = event.getShows();
+            page.time[turn].setVisible(true);
+            page.time[(turn + 2) % 3].setVisible(false);
+            if (mineIndex == turn) {
+                //轮到自己出牌，展示出牌按钮
+                page.publishCard[0].setVisible(true);
+                page.publishCard[1].setVisible(true);
             }
-            if (page.shows[page.showIndex].size() > 0) {
+            if (page.lastShowIndex != showIndex) {
+                page.lastShowIndex = showIndex;
+                page.shows[page.lastShowIndex].clear();
+                logger.debug("不是自己出牌，需要更新界面展示");
+                //移除牌 到展示牌的集合
+                for (int i = 0; i < event.getShows().size(); i++) {
+                    page.players[showIndex].get(i).setCard(event.getShows().get(i));
+                    page.shows[showIndex].add(page.players[showIndex].get(i));
+                }
+                //模拟一出牌面
+                page.players[showIndex].removeAll(page.shows[showIndex]);
+                // 出牌展示到界面上
                 Point point = new Point();
-                if (page.showIndex != 1) {
-                    if (page.showIndex == 0) {
-                        point.x = 240;
-                    } else {
-                        point.x = 600;
-                    }
-                    point.y = (400 / 2) - (page.shows[page.showIndex].size() + 1) * 15 / 2;// 屏幕中部
-                    for (JCard card : page.shows[page.showIndex]) {
-                        card.turnFront();
-                        Common.move(card, card.getLocation(), point);
-                        point.y += 15;
-                    }
-                    for (int i = 0; i < page.shows[page.showIndex].size(); i++) {
-                        page.players[page.showIndex].remove(i);
-                    }
-                    Common.rePosition(page, page.players[page.showIndex], page.showIndex);
+                if (showIndex == 0) {
+                    point.x = 240;
+                } else {
+                    point.x = 600;
                 }
+                point.y = (400 / 2) - (page.shows[page.showIndex].size() + 1) * 15 / 2;// 屏幕中部
+                for (JCard card : page.shows[page.showIndex]) {
+                    card.turnFront();
+                    Common.move(card, card.getLocation(), point);
+                    point.y += 15;
+                }
+                Common.order(page.players[page.turn]);
+                Common.rePosition(page, page.players[page.showIndex], page.showIndex);
             } else {
-                page.time[page.showIndex].setVisible(true);
-                page.time[page.showIndex].setText("不要");
-
+                page.time[turn].setVisible(true);
+                page.time[turn].setText("不要");
             }
-            //展示出牌到页面
-            int i = 30;
-            while (i >= 0 && page.isRun) {
-                page.time[1].setText("倒计时:" + i--);
-                page.second(1);
-            }
-            if (i == -1) {
-                page.time[page.turn].setText("不要");
-                if (page.turn == page.user.getIndex()) {
-                    page.publishCard[0].setVisible(false);
-                    page.publishCard[1].setVisible(false);
-                }
-                // TODO: 2020/3/18 发送出牌消息
-                Event result = new Event();
-                result.setType("出牌");
-            }
+            // 轮到输出牌，界面模拟倒计时
+            page.t = new Time(page, this, true, false);
+            page.t.start();
         }
+
     }
 
     @Override
