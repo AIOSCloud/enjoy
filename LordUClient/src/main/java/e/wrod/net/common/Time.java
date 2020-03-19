@@ -176,7 +176,7 @@ public class Time extends Thread {
     public void ShowCard(int role) {
         Model model = Compute.getModel(main.getPlayerList()[role]);
         // 待走的牌
-        List<JCard> cards = new ArrayList<>();
+        List<JCard> cards = new ArrayList<JCard>();
         // 如果是主动出牌
         if ((main.getTime()[(role + 1) % 3].getText().equals("不要")
                 && main.getTime()[(role + 2) % 3].getText().equals("不要"))) {
@@ -300,8 +300,9 @@ public class Time extends Thread {
             //炸弹
             if (cards.size() == 0) {
                 int len4 = model.a4.size();
-                if (len4 > 0)
+                if (len4 > 0) {
                     cards.addAll(model.a4.get(len4 - 1));
+                }
             }
         }
         logger.debug("出牌的张数为:" + cards.size());
@@ -309,11 +310,14 @@ public class Time extends Thread {
         main.getCurrentList()[role].clear();
         if (cards.size() > 0) {
             Point point = new Point();
-            if (role == 0)
+            if (role == 0) {
                 point.x = 200;
-            if (role == 2)
+            }
+            if (role == 2) {
                 point.x = 550;
-            point.y = (400 / 2) - (cards.size() + 1) * 15 / 2;// 屏幕中部
+            }
+            // 屏幕中部
+            point.y = (400 / 2) - (cards.size() + 1) * 15 / 2;
             // 将name转换成Card
             for (JCard card : cards) {
                 Common.move(card, card.getLocation(), point);
@@ -370,13 +374,15 @@ public class Time extends Thread {
         int len1 = model1.size();
         int len2 = model2.size();
 
-        if (len1 < 1 || len2 < 2)
+        if (len1 < 1 || len2 < 2){
             return;
+        }
         for (int i = 0; i < len1; i++) {
             if (Common.getValue(model1.get(i).get(0)) > Common.getValue(player.get(0))) {
                 list.addAll(model1.get(i));
-                for (int j = 1; j <= 2; j++)
+                for (int j = 1; j <= 2; j++) {
                     list.addAll(model2.get(len2 - j));
+                }
             }
         }
     }
@@ -414,8 +420,9 @@ public class Time extends Thread {
             System.out.println("王炸");
             return;
         }
-        if (len1 < 1 || len2 < 1)
+        if (len1 < 1 || len2 < 1){
             return;
+        }
         for (int len = len1, i = len - 1; i >= 0; i--) {
             if (Common.getValue(model1.get(i).get(0)) > Common.getValue(player.get(0))) {
                 list.addAll(model1.get(i));
@@ -423,15 +430,15 @@ public class Time extends Thread {
             }
         }
         list.addAll(model2.get(len2 - 1));
-        if (list.size() < 2)
+        if (list.size() < 2){
             list.clear();
+        }
     }
-
-    // 延时，模拟时钟
     public void timeWait(int n, int player) {
         logger.debug("初始化计时器......");
-        if (main.getCurrentList()[player].size() > 0)
+        if (main.getCurrentList()[player].size() > 0) {
             Common.hideCards(main.getCurrentList()[player]);
+        }
         // 如果是我，10秒到后直接下一家出牌
         logger.debug("是否下一个用户" + main.isNextPlayer() + " 倒计时变更" + n);
         if (player == 1) {

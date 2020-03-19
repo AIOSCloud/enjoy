@@ -24,7 +24,7 @@ public class Time extends Thread {
         if (lord) {
             int i = 10;
             while (i >= 0 && isRun) {
-                page.time[page.mine].setText("倒计时:" + i--);
+                page.time[page.mine].setText("倒" + i--);
                 page.second(1);
             }
             if (i == -1) {
@@ -42,7 +42,7 @@ public class Time extends Thread {
         } else {
             int i = 30;
             while (i >= 0 && isRun) {
-                page.time[page.turn].setText("倒计时:" + i--);
+                page.time[page.turn].setText("计时:" + i--);
                 page.second(1);
             }
             if (i == -1) {

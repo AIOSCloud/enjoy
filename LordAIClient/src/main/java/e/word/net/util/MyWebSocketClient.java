@@ -4,12 +4,14 @@ import com.alibaba.fastjson.JSON;
 import e.word.net.common.*;
 import e.word.net.model.Card;
 import e.word.net.model.Event;
+import e.word.net.model.Message;
 import e.word.net.model.User;
 import org.apache.log4j.Logger;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
 import java.net.URI;
+import java.rmi.MarshalException;
 import java.util.List;
 
 public class MyWebSocketClient extends WebSocketClient {
@@ -26,6 +28,7 @@ public class MyWebSocketClient extends WebSocketClient {
 
     @Override
     public void onMessage(String message) {
+        logger.debug("机器人出牌I......" + message);
         // TODO: 2020/3/17 接受服务端发送的消息
         Event event = JSON.parseObject(message, Event.class);
         if (event.getType().equals("建立链接。。。。。。")) {
@@ -46,8 +49,7 @@ public class MyWebSocketClient extends WebSocketClient {
                 boolean follow = false;
                 AIPlayer player = new AIPlayer(event.getPlayers(), event.getShows(), mineIndex, lordIndex, false);
                 List<Card> cards = player.play();
-                second(6);
-
+                second(8);
                 //出牌
                 Event result = new Event();
                 result.setType("出牌");
@@ -55,44 +57,48 @@ public class MyWebSocketClient extends WebSocketClient {
                 result.setIndex(mineIndex);
                 result.setUser(event.getUser());
                 result.setShowIndex(mineIndex);
+                result.setPlay(true);
+                result.setPlayIndex(mineIndex);
                 this.send(JSON.toJSONString(result));
                 logger.debug("机器人是用户:" + mineIndex);
             }
         } else if (event.getType().equals("出牌")) {
-            second(3);
+            second(10);
             int turn = event.getTurn();
             int mineIndex = event.getIndex();
             int lordIndex = event.getLordIndex();
             int showIndex = event.getShowIndex();
-            if (mineIndex == turn) {
-                boolean follow = false;
-                //如果轮到自己出牌
-                if (showIndex != mineIndex) {
-                    follow = true;
-                }
-                User user = event.getUser();
-                // TODO: 2020/3/18 轮到自己出牌
-                List<Card> players = event.getPlayers();
-                List<Card> shows = event.getShows();
-                AIPlayer player = new AIPlayer(players, shows, mineIndex, lordIndex, follow);
-                List<Card> cards = player.play();
-                logger.debug("出牌张数:" + cards.size());
-                //出牌
-                Event result = new Event();
-                result.setType("出牌");
-                result.setUser(user);
-                result.setIndex(mineIndex);
-                if (cards.size() > 0) {
-                    //出牌
-                    result.setShows(cards);
-                    result.setShowIndex(mineIndex);
-                } else {
-                    //没出牌
-                    result.setShows(event.getShows());
-                    result.setShowIndex(event.getShowIndex());
-                }
-                this.send(JSON.toJSONString(result));
+            boolean follow = false;
+            //如果轮到自己出牌
+            if (showIndex != mineIndex) {
+                follow = true;
             }
+            User user = event.getUser();
+            // TODO: 2020/3/18 轮到自己出牌
+            List<Card> players = event.getPlayers();
+            List<Card> shows = event.getShows();
+            AIPlayer player = new AIPlayer(players, shows, mineIndex, lordIndex, follow);
+            List<Card> cards = player.play();
+            logger.debug("出牌张数:" + cards.size());
+            //出牌
+            Event result = new Event();
+            result.setType("出牌");
+            result.setUser(user);
+            result.setIndex(mineIndex);
+            if (cards.size() > 0) {
+                //出牌
+                result.setShows(cards);
+                result.setShowIndex(mineIndex);
+                result.setPlay(true);
+                result.setPlayIndex(mineIndex);
+            } else {
+                //没出牌
+                result.setShows(event.getShows());
+                result.setShowIndex(event.getShowIndex());
+                result.setPlay(false);
+                result.setPlayIndex(mineIndex);
+            }
+            this.send(JSON.toJSONString(result));
         }
     }
 

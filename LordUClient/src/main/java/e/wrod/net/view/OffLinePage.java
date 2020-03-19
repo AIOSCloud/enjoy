@@ -236,7 +236,7 @@ public class OffLinePage extends JFrame implements ActionListener {
         if (e.getSource() == publishCard[0]) {
             logger.debug("出牌......");
             // 出牌
-            List<JCard> cards = new Vector<>();
+            List<JCard> cards = new Vector<JCard>();
             for (int i = 0; i < playerList[1].size(); i++) {
                 JCard card = playerList[1].get(i);
                 if (card.isClicked()) {
@@ -247,8 +247,9 @@ public class OffLinePage extends JFrame implements ActionListener {
             logger.info("开始判断是否可以出牌......");
             if (time[0].getText().equals("不要") && time[2].getText().equals("不要")) {
                 logger.debug("判断需要出牌的类型:" + Common.jugdeType(cards));
-                if (Common.jugdeType(cards) != CardType.c0)
+                if (Common.jugdeType(cards) != CardType.c0){
                     flag = 1;
+                }
             } else {
                 flag = Common.checkCards(cards, currentList);
             }

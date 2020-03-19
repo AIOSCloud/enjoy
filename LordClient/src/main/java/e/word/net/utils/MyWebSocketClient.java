@@ -30,7 +30,6 @@ public class MyWebSocketClient extends WebSocketClient {
 
     @Override
     public void onMessage(String message) {
-        logger.debug("...........on message......");
         logger.debug(message);
         Event event = JSON.parseObject(message, Event.class);
         if (event.getType().equals("建立链接")) {
@@ -115,21 +114,23 @@ public class MyWebSocketClient extends WebSocketClient {
                 page.publishCard[1].setVisible(true);
             }
             page.time[page.turn].setVisible(true);
-            Time time = new Time(page, this, true, false);
-            time.start();
+            page.t = new Time(page, this, true, false);
+            page.t.start();
         } else if (event.getType().equals("出牌")) {
-            logger.debug("y用户出牌，更新界面信息......");
             page.t.isRun = false;
             int turn = event.getTurn();
             int mineIndex = event.getIndex();
             int lordIndex = event.getLordIndex();
             int showIndex = event.getShowIndex();
-            //判断界面是否更新
+            boolean play = event.isPlay();
+            int playIndex = event.getPlayIndex();
             //更新界面信息
             page.turn = turn;
             page.mine = mineIndex;
             page.showIndex = showIndex;
+            page.shows[showIndex].clear();
             List<Card> showsCards = event.getShows();
+            page.shows[turn].clear();
             page.time[turn].setVisible(true);
             page.time[(turn + 2) % 3].setVisible(false);
             if (mineIndex == turn) {
@@ -137,7 +138,7 @@ public class MyWebSocketClient extends WebSocketClient {
                 page.publishCard[0].setVisible(true);
                 page.publishCard[1].setVisible(true);
             }
-            if (page.lastShowIndex != showIndex) {
+            if (play) {
                 page.lastShowIndex = showIndex;
                 page.shows[page.lastShowIndex].clear();
                 logger.debug("不是自己出牌，需要更新界面展示");
@@ -155,7 +156,8 @@ public class MyWebSocketClient extends WebSocketClient {
                 } else {
                     point.x = 600;
                 }
-                point.y = (400 / 2) - (page.shows[page.showIndex].size() + 1) * 15 / 2;// 屏幕中部
+                // 屏幕中部
+                point.y = (400 / 2) - (page.shows[page.showIndex].size() + 1) * 15 / 2;
                 for (JCard card : page.shows[page.showIndex]) {
                     card.turnFront();
                     Common.move(card, card.getLocation(), point);
@@ -164,8 +166,8 @@ public class MyWebSocketClient extends WebSocketClient {
                 Common.order(page.players[page.turn]);
                 Common.rePosition(page, page.players[page.showIndex], page.showIndex);
             } else {
-                page.time[turn].setVisible(true);
-                page.time[turn].setText("不要");
+                page.time[playIndex].setVisible(true);
+                page.time[playIndex].setText("不要");
             }
             // 轮到输出牌，界面模拟倒计时
             page.t = new Time(page, this, true, false);

@@ -33,5 +33,5 @@ public class RoomPage extends JFrame {
     int lordFlag; //地主标志
     int turn;
     int follow;
-    Map<Integer, Boolean> loadLord = new HashMap<>();
+    Map<Integer, Boolean> loadLord = new HashMap<Integer, Boolean>();
 }

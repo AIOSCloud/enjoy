@@ -54,10 +54,14 @@ public class Compute {
     public static void get123(List<JCard> list, Model model) {
         List<JCard> del = new ArrayList<JCard>();//要删除的Cards
         List<JCard> cards;
-        if (list.size() > 0 && (Common.getValue(list.get(0)) < 7 || Common.getValue(list.get(list.size() - 1)) > 10))
+        if (list.size() > 0
+                && (Common.getValue(list.get(0)) < 7
+                || Common.getValue(list.get(list.size() - 1)) > 10)){
             return;
-        if (list.size() < 5)
+        }
+        if (list.size() < 5){
             return;
+        }
         for (int i = 0, len = list.size(); i < len; i++) {
             int k = i;
             for (int j = i; j < len; j++) {
@@ -66,7 +70,7 @@ public class Compute {
                 }
             }
             if (k - i >= 4) {
-                cards = new ArrayList<>();
+                cards = new ArrayList<JCard>();
                 for (int j = i; j <= k; j++) {
                     cards.add(list.get(j));
                     del.add(list.get(j));
@@ -85,8 +89,9 @@ public class Compute {
         //从model里面的对子找
         List<List<JCard>> twos = model.getA2();
         List<JCard> cards;
-        if (twos.size() < 3)
+        if (twos.size() < 3){
             return;
+        }
         JCard card[] = new JCard[twos.size()];
         for (int i = 0, len = twos.size(); i < len; i++) {
             cards = twos.get(i);
@@ -96,12 +101,13 @@ public class Compute {
         for (int i = 0, len = twos.size(); i < len; i++) {
             int k = i;
             for (int j = i; j < len; j++) {
-                if (Common.getValue(card[i]) - Common.getValue(card[j]) == j - i)
+                if (Common.getValue(card[i]) - Common.getValue(card[j]) == j - i) {
                     k = j;
+                }
             }
             if (k - i >= 2)//k=4 i=1
             {//说明从i到k是连队
-                two2 = new ArrayList<>();
+                two2 = new ArrayList<JCard>();
                 for (int j = i; j <= k; j++) {
                     two2.addAll(twos.get(j));
                     del.add(twos.get(j));
@@ -121,8 +127,9 @@ public class Compute {
         List<List<JCard>> threes = model.getA3();
         List<JCard> cards;
         List<JCard> plans;
-        if (threes.size() < 2)
+        if (threes.size() < 2) {
             return;
+        }
         JCard card[] = new JCard[threes.size()];
         for (int i = 0, len = threes.size(); i < len; i++) {
             cards = threes.get(i);
@@ -131,11 +138,13 @@ public class Compute {
         for (int i = 0, len = threes.size(); i < len; i++) {
             int k = i;
             for (int j = i; j < len; j++) {
-                if (Common.getValue(card[j]) - Common.getValue(card[i]) == j - i)
+                if (Common.getValue(card[j]) - Common.getValue(card[i]) == j - i){
                     k = j;
+                }
             }
-            if (k != i) {//说明从i到k是飞机
-                plans = new ArrayList<>(2);
+            //说明从i到k是飞机
+            if (k != i) {
+                plans = new ArrayList<JCard>(2);
                 for (int j = i; j <= k; j++) {
                     plans.addAll(threes.get(j));
                     del.add(threes.get(j));
@@ -150,11 +159,12 @@ public class Compute {
     //拆炸弹
     public static void getBoomb(List<JCard> list, Model model) {
         logger.debug("牌型分类炸弹");
-        List<JCard> del = new ArrayList<JCard>();//要删除的Cards
+        //要删除的Cards
+        List<JCard> del = new ArrayList<JCard>();
         List<JCard> boom = null;
         //王炸
         if (list.size() >= 2 && list.get(0).getCard().getColor() == 5 && list.get(1).getCard().getColor() == 5) {
-            boom = new ArrayList<>(2);
+            boom = new ArrayList<JCard>(2);
             boom.add(list.get(0));
             boom.add(list.get(1));
             model.getA4().add(boom);
@@ -165,7 +175,7 @@ public class Compute {
         //一般的炸弹
         for (int i = 0, len = list.size(); i < len; i++) {
             if (i + 3 < len && Common.getValue(list.get(i)) == Common.getValue(list.get(i + 3))) {
-                boom = new ArrayList<>(4);
+                boom = new ArrayList<JCard>(4);
                 for (int j = i; j <= i + 3; j++) {
                     boom.add(list.get(j));
                     del.add(list.get(j));
@@ -185,7 +195,7 @@ public class Compute {
         //连续3张相同
         for (int i = 0, len = list.size(); i < len; i++) {
             if (i + 2 < len && Common.getValue(list.get(i)) == Common.getValue(list.get(i + 2))) {
-                three = new ArrayList<>(3);
+                three = new ArrayList<JCard>(3);
                 for (int j = i; j <= i + 2; j++) {
                     three.add(list.get(j));
                     del.add(list.get(j));
@@ -205,7 +215,7 @@ public class Compute {
         //连续2张相同
         for (int i = 0, len = list.size(); i < len; i++) {
             if (i + 1 < len && Common.getValue(list.get(i)) == Common.getValue(list.get(i + 1))) {
-                two = new ArrayList<>(2);
+                two = new ArrayList<JCard>(2);
                 two.add(list.get(i));
                 two.add(list.get(i + 1));
                 del.add(list.get(i));
@@ -223,7 +233,7 @@ public class Compute {
         List<JCard> del = new ArrayList<JCard>();//要删除的Cards
         List<JCard> single;
         for (int i = 0, len = list.size(); i < len; i++) {
-            single = new ArrayList<>();
+            single = new ArrayList<JCard>();
             single.add(list.get(i));
             model.getA1().add(single);
             del.add(list.get(i));

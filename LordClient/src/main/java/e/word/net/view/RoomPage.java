@@ -176,6 +176,7 @@ public class RoomPage extends JFrame implements ActionListener {
 
     public void createRoom() {
         logger.debug("创建房间");
+        second(3);
         while (!ws.getReadyState().equals(WebSocket.READYSTATE.OPEN)) {
             second(1);
             logger.debug("链接初始化中，请稍后.....");
@@ -253,6 +254,7 @@ public class RoomPage extends JFrame implements ActionListener {
             time[1].setText("不要");
             publishCard[0].setVisible(false);
             publishCard[1].setVisible(false);
+            shows[(mine + showIndex + 1) % 3].clear();
             //出牌
             Event result = new Event();
             result.setType("出牌");
@@ -261,6 +263,8 @@ public class RoomPage extends JFrame implements ActionListener {
             result.setShows(Common.getCards(shows[showIndex]));
             result.setShowIndex(showIndex);
             result.setIndex(mine);
+            result.setPlay(false);
+            result.setPlayIndex(mine);
             ws.send(JSON.toJSONString(result));
         }
     }

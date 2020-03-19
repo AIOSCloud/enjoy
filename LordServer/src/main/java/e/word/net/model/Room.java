@@ -30,8 +30,8 @@ public class Room {
     int turn;
 
     public Room() {
-        lordCards = new ArrayList<>(3);
-        users = new ArrayList<>(3);
+        lordCards = new ArrayList<Card>(3);
+        users = new ArrayList<User>(3);
         for (int i = 0; i < 3; i++) {
             showsList[i] = new ArrayList<Card>();
             playerList[i] = new ArrayList<Card>();

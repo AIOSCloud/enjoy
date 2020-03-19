@@ -26,7 +26,7 @@ public class AIClient {
     public List<JCard> plays() {
         Model model = Compute.getModel(players);
         // 待走的牌
-        List<JCard> cards = new ArrayList<>();
+        List<JCard> cards = new ArrayList<JCard>();
         logger.info("用户" + mine + "出牌");
         if (shows != null && shows.size() > 0) {
             logger.debug("判断为跟牌。。。。。" + shows.size());
@@ -153,8 +153,9 @@ public class AIClient {
             //炸弹
             if (cards.size() == 0) {
                 int len4 = model.a4.size();
-                if (len4 > 0)
+                if (len4 > 0) {
                     cards.addAll(model.a4.get(len4 - 1));
+                }
             }
         }
         logger.debug("出牌的张数为:" + cards.size());
@@ -199,13 +200,15 @@ public class AIClient {
         int len1 = model1.size();
         int len2 = model2.size();
 
-        if (len1 < 1 || len2 < 2)
+        if (len1 < 1 || len2 < 2) {
             return;
+        }
         for (List<JCard> cards : model1) {
             if (Common.getValue(cards.get(0)) > Common.getValue(shows.get(0))) {
                 list.addAll(cards);
-                for (int j = 1; j <= 2; j++)
+                for (int j = 1; j <= 2; j++) {
                     list.addAll(model2.get(len2 - j));
+                }
             }
         }
     }

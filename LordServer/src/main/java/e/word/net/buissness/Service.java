@@ -20,8 +20,8 @@ public class Service {
     // TODO: 2020/3/17 robot
     private static User robot;
     // TODO: 2020/3/17 服务登录时，保存所有的用户信息
-    public static ConcurrentMap<String, User> userMap = new ConcurrentHashMap<>();
-    public static ConcurrentMap<String, Room> house = new ConcurrentHashMap<>();
+    public static ConcurrentMap<String, User> userMap = new ConcurrentHashMap<String, User>();
+    public static ConcurrentMap<String, Room> house = new ConcurrentHashMap<String, Room>();
 
     /**
      * 登录验证
@@ -171,10 +171,13 @@ public class Service {
         int index = event.getIndex();
         // TODO: 2020/3/18 获取房间信息
         Room room = house.get(user.getUserId());
+        boolean play = event.isPlay();
+        int playIndex = event.getPlayIndex();
         List<User> users = room.getUsers();
+        int turn = (index + 1) % 3;
         // TODO: 2020/3/18 更新房间信息
-        //移除玩家出的牌
-        room.setTurn((index + 1) % 3);
+        // 设置下级的未知
+        room.setTurn(turn);
         // 判断自己是否出牌
         if (showIndex == index) {
             //更新房间信息
@@ -192,15 +195,19 @@ public class Service {
         // 发送下一个玩家的牌
         result.setShows(shows);
         result.setShowIndex(showIndex);
-        result.setTurn((index + 1) % 3);
+        result.setTurn(turn);
         result.setLordIndex(room.getLordIndex());
+        result.setPlay(play);
+        result.setPlayIndex(playIndex);
         for (int i = 0; i < users.size(); i++) {
             result.setIndex(i);
             result.setUser(users.get(i));
             result.setPlayers(room.getPlayerList()[i]);
-            // TODO: 2020/3/18 发送上家出的牌给下家
-            TextWebSocketFrame tws = new TextWebSocketFrame(JSON.toJSONString(result));
-            ChannelSupervise.findChannel(users.get(i).getUserId()).writeAndFlush(tws);
+            if (!(users.get(i).isRobot() && turn != i)) {
+                // TODO: 2020/3/18 发送上家出的牌给下家
+                TextWebSocketFrame tws = new TextWebSocketFrame(JSON.toJSONString(result));
+                ChannelSupervise.findChannel(users.get(i).getUserId()).writeAndFlush(tws);
+            }
         }
     }
 }

@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 public class Memory {
     // TODO: 2020/3/16 用户表
-    public static List<User> users = new ArrayList<>();
+    public static List<User> users = new ArrayList<User>();
     // TODO: 2020/3/16 房间号
-    public static List<Room> rooms = new ArrayList<>();
+    public static List<Room> rooms = new ArrayList<Room>();
 }

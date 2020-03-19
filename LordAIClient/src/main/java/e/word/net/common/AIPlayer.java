@@ -31,7 +31,7 @@ public class AIPlayer {
     public List<Card> play() {
         Model model = Compute.getModel(players);
         // 待走的牌
-        List<Card> cards = new ArrayList<>();
+        List<Card> cards = new ArrayList<Card>();
         // 如果是主动出牌
         if (!follow) {
             // 有单出单 (除开3带，飞机能带的单牌)
@@ -149,15 +149,15 @@ public class AIPlayer {
             //炸弹
             if (cards.size() == 0) {
                 int len4 = model.a4.size();
-                if (len4 > 0)
+                if (len4 > 0) {
                     cards.addAll(model.a4.get(len4 - 1));
+                }
             }
         }
         logger.debug("出牌的张数为:" + cards.size());
         return cards;
     }
 
-    //顺子
     public void AI_3(List<List<Card>> model, List<Card> shows, List<Card> list, int mineIndex, int lordIndex) {
         for (int i = 0, len = model.size(); i < len; i++) {
             List<Card> flow = model.get(i);
@@ -168,22 +168,25 @@ public class AIPlayer {
         }
     }
 
-    //飞机带单，双
     public void AI_4(List<List<Card>> model1, List<List<Card>> model2, List<Card> shows, List<Card> list, int mineIndex, int lordIndex) {
         //排序按重复数
         Common.order(shows);
         int len1 = model1.size();
         int len2 = model2.size();
 
-        if (len1 < 1 || len2 < 1)
+        if (len1 < 1 || len2 < 1) {
             return;
+        }
         for (int i = 0; i < len1; i++) {
             List<Card> plan = model1.get(i);
             List<Card> twos = model2.get(0);
-            if ((plan.size() / 3 <= len2) && (plan.size() * (3 + twos.size()) == shows.size()) && Common.getValue(model1.get(i).get(0)) > Common.getValue(shows.get(0))) {
+            if ((plan.size() / 3 <= len2)
+                    && (plan.size() * (3 + twos.size()) == shows.size())
+                    && Common.getValue(model1.get(i).get(0)) > Common.getValue(shows.get(0))) {
                 list.addAll(model1.get(i));
-                for (int j = 1; j <= plan.size(); j++)
+                for (int j = 1; j <= plan.size(); j++) {
                     list.addAll(model2.get(len2 - j));
+                }
             }
         }
     }
@@ -195,13 +198,15 @@ public class AIPlayer {
         int len1 = model1.size();
         int len2 = model2.size();
 
-        if (len1 < 1 || len2 < 2)
+        if (len1 < 1 || len2 < 2) {
             return;
+        }
         for (List<Card> cards : model1) {
             if (Common.getValue(cards.get(0)) > Common.getValue(shows.get(0))) {
                 list.addAll(cards);
-                for (int j = 1; j <= 2; j++)
+                for (int j = 1; j <= 2; j++) {
                     list.addAll(model2.get(len2 - j));
+                }
             }
         }
     }

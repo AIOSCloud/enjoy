@@ -33,4 +33,6 @@ public class Event {
     int showIndex;
     //出牌上家信息
     int lastIndex;
+    boolean play;
+    int playIndex;
 }

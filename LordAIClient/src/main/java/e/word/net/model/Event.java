@@ -34,4 +34,6 @@ public class Event {
     int showIndex;
     //上次出牌
     int lastIndex;
+    boolean play;
+    int playIndex;
 }
