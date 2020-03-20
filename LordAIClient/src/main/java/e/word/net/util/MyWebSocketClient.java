@@ -41,7 +41,7 @@ public class MyWebSocketClient extends WebSocketClient {
             logger.debug("抢地主......");
             // TODO: 2020/3/18 如果自己是地主，那么出牌
             //获取自己的位置
-            int mineIndex = event.getLordIndex();
+            int mineIndex = event.getIndex();
             //获取地主的位置
             int lordIndex = event.getLordIndex();
             if (mineIndex == lordIndex) {
@@ -49,7 +49,7 @@ public class MyWebSocketClient extends WebSocketClient {
                 boolean follow = false;
                 AIPlayer player = new AIPlayer(event.getPlayers(), event.getShows(), mineIndex, lordIndex, false);
                 List<Card> cards = player.play();
-                second(8);
+                second(30);
                 //出牌
                 Event result = new Event();
                 result.setType("出牌");
@@ -63,7 +63,7 @@ public class MyWebSocketClient extends WebSocketClient {
                 logger.debug("机器人是用户:" + mineIndex);
             }
         } else if (event.getType().equals("出牌")) {
-            second(10);
+            second(30);
             int turn = event.getTurn();
             int mineIndex = event.getIndex();
             int lordIndex = event.getLordIndex();

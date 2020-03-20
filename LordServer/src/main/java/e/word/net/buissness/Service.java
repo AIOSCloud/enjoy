@@ -105,16 +105,16 @@ public class Service {
         // TODO: 2020/3/17 获取房间信息
         User user = event.getUser();
         Room room = house.get(user.getUserId());
+        int lordIndex;
         List<User> users = room.getUsers();
         if (!event.isOnline()) {
             Event result = new Event();
             result.setType("地主");
             result.setLordList(room.getLordCards());
             // TODO: 2020/3/18 单机斗地主
-            if (user.getUserId().equals(users.get(1).getUserId())
-                    && !users.get(1).isRobot()
-                    && event.isLord()) {
+            if (event.getIndex() == 1) {
                 // TODO: 2020/3/18 如果用户抢地主 设置用户为地主
+                lordIndex = 1;
                 room.setLordIndex(1);
                 room.setTurn(1);
                 // TODO: 2020/3/18 设置返回客户端信息
@@ -127,6 +127,7 @@ public class Service {
                 // TODO: 2020/3/18 用户不抢地主 地主判定
                 if (Common.getScore(room.getPlayerList()[0]) > Common.getScore(room.getPlayerList()[2])) {
                     // TODO: 2020/3/18  机器人1的牌面比机器人2的牌面好
+                    lordIndex = 0;
                     room.setLordIndex(0);
                     room.setTurn(0);
                     //返回客户端信息
@@ -137,6 +138,7 @@ public class Service {
                     Common.order(room.getPlayerList()[0]);
                 } else {
                     //房间信息跟新
+                    lordIndex = 2;
                     room.setLordIndex(2);
                     room.setTurn(2);
                     room.getPlayerList()[1].addAll(room.getLordCards());
@@ -149,8 +151,11 @@ public class Service {
                 result.setIndex(i);
                 result.setUser(users.get(i));
                 result.setPlayers(room.getPlayerList()[i]);
-                TextWebSocketFrame tws = new TextWebSocketFrame(JSON.toJSONString(result));
-                ChannelSupervise.findChannel(users.get(i).getUserId()).writeAndFlush(tws);
+                if (!(users.get(i).isRobot() && i != lordIndex)) {
+                    // TODO: 2020/3/20  非地主用户不需要发信息
+                    TextWebSocketFrame tws = new TextWebSocketFrame(JSON.toJSONString(result));
+                    ChannelSupervise.findChannel(users.get(i).getUserId()).writeAndFlush(tws);
+                }
             }
         }
     }
@@ -203,7 +208,8 @@ public class Service {
             result.setIndex(i);
             result.setUser(users.get(i));
             result.setPlayers(room.getPlayerList()[i]);
-            if (!(users.get(i).isRobot() && turn != i)) {
+            if (!(users.get(i).isRobot() && turn != i)
+                    && i != playIndex) {
                 // TODO: 2020/3/18 发送上家出的牌给下家
                 TextWebSocketFrame tws = new TextWebSocketFrame(JSON.toJSONString(result));
                 ChannelSupervise.findChannel(users.get(i).getUserId()).writeAndFlush(tws);

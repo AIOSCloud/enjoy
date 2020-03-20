@@ -1,6 +1,7 @@
 package e.word.net.view;
 
 import com.alibaba.fastjson.JSON;
+import e.word.net.common.CardType;
 import e.word.net.common.Common;
 import e.word.net.component.JCard;
 import e.word.net.model.Card;
@@ -18,6 +19,7 @@ import java.awt.event.ActionListener;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 //房间
 public class RoomPage extends JFrame implements ActionListener {
@@ -245,16 +247,78 @@ public class RoomPage extends JFrame implements ActionListener {
         }
         if (e.getSource() == publishCard[0]) {
             // TODO: 2020/3/18 出牌
+            logger.debug("出牌......");
+            // TODO: 2020/3/18 不要
+            t.isRun = false;
+            // 出牌
+            List<JCard> cards = new ArrayList<JCard>();
+            for (int i = 0; i < players[mine].size(); i++) {
+                JCard card = players[1].get(i);
+                if (card.isClicked()) {
+                    cards.add(card);
+                }
+            }
+            int flag = 0;
+            logger.info("开始判断是否可以出牌......");
+            if (turn == mine && showIndex == mine) {
+                //轮到自己出牌 并且上次是自己出牌
+                if (Common.jugdeType(cards) != CardType.c0) {
+                    flag = 1;
+                }
+            } else {
+                List<JCard> currentList = shows[showIndex];
+                flag = Common.checkCards(cards, currentList);
+            }
+            //可以出牌
+            logger.debug("判断是否可以出牌:" + flag);
+            if (flag == 1) {
+                shows[mine].clear();
+                shows[mine].addAll(cards);
+                players[mine].removeAll(cards);
+                //定位出牌
+                Point point = new Point();
+                point.x = (770 / 2) - (shows[mine].size() + 1) * 15 / 2;
+                point.y = 300;
+                for (int i = 0, len = shows[mine].size(); i < len; i++) {
+                    JCard card = shows[1].get(i);
+                    Common.move(card, card.getLocation(), point);
+                    point.x += 15;
+                }
+                //重新理牌
+                Common.rePosition(this, players[mine], 1);
+
+                //出牌
+                Event result = new Event();
+                result.setType("出牌");
+                result.setIndex(mine);
+                result.setUser(user);
+                result.setShows(Common.getCards(cards));
+                result.setShowIndex(mine);
+                result.setPlay(true);
+                result.setPlayIndex(mine);
+                ws.send(JSON.toJSONString(result));
+
+                time[mine].setVisible(false);
+                publishCard[0].setVisible(false);
+                publishCard[1].setVisible(false);
+
+                shows[(mine + 1) % 3].clear();
+                time[(mine + 1) % 3].setVisible(true);
+                t = new Time(this, ws, true, false);
+                t.start();
+                logger.debug("机器人是用户:" + mine);
+            } else {
+                JOptionPane.showMessageDialog(this, "请正确出牌......");
+            }
 
         }
         if (e.getSource() == publishCard[1]) {
+            logger.debug("出牌......");
             // TODO: 2020/3/18 不要
             t.isRun = false;
             turn = (turn + 1) % 3;
-            time[1].setText("不要");
-            publishCard[0].setVisible(false);
-            publishCard[1].setVisible(false);
-            shows[(mine + showIndex + 1) % 3].clear();
+            time[mine].setText("不要");
+
             //出牌
             Event result = new Event();
             result.setType("出牌");
@@ -266,6 +330,16 @@ public class RoomPage extends JFrame implements ActionListener {
             result.setPlay(false);
             result.setPlayIndex(mine);
             ws.send(JSON.toJSONString(result));
+
+            time[mine].setVisible(false);
+            publishCard[0].setVisible(false);
+            publishCard[1].setVisible(false);
+
+            shows[(turn + 1) % 3].clear();
+            time[(mine + 1) % 3].setVisible(true);
+            time[(turn + 2) % 3].setVisible(false);
+            t = new Time(this, ws, true, false);
+            t.start();
         }
     }
 }

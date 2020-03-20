@@ -45,7 +45,8 @@ public class MyWebSocketClient extends WebSocketClient {
             //用户牌
             List<Card> playerCards = event.getPlayers();
             for (int i = 0; i < page.jCards.length; i++) {
-                if (i >= 51) {//地主牌
+                //地主牌
+                if (i >= 51) {
                     Common.move(page.jCards[i], page.jCards[i].getLocation(), new Point(320 + (i - 51) * 80, 10));
                     page.lordList.add(page.jCards[i]);
                     continue;
@@ -86,12 +87,19 @@ public class MyWebSocketClient extends WebSocketClient {
             page.t.start();
         } else if (event.getType().equals("地主")) {
             logger.debug("跟新地主信息......");
-            page.lastShowIndex = -1;
+            int turn = event.getTurn();
+            int mineIndex = event.getIndex();
+            int lordIndex = event.getLordIndex();
+            int showIndex = event.getShowIndex();
+            boolean play = event.isPlay();
+            int playIndex = event.getPlayIndex();
             //获取地主牌
             List<Card> lordCards = event.getLordList();
             //设置地主
-            page.lordFlag = event.getLordIndex();
-            page.turn = event.getTurn();
+            page.turn = turn;
+            page.mine = mineIndex;
+            page.showIndex = showIndex;
+            page.shows[showIndex].clear();
             page.time[page.lordFlag].setVisible(true);
             page.time[page.lordFlag].setText("抢地主");
             page.setLord(page.lordFlag);
@@ -102,19 +110,20 @@ public class MyWebSocketClient extends WebSocketClient {
             page.second(5);
             for (JCard card : page.lordList) {
                 card.setCanClick(true);
-                if (page.lordFlag != page.user.getIndex()) {
+                if (page.lordFlag != mineIndex) {
                     card.turnRear();
                 }
                 page.players[page.lordFlag].add(card);
             }
             Common.order(page.players[page.lordFlag]);
             Common.rePosition(page, page.players[page.lordFlag], page.lordFlag);
-            if (page.turn == event.getTurn()) {
+            if (mineIndex == turn) {
+                logger.debug("展示出牌按钮......");
                 page.publishCard[0].setVisible(true);
                 page.publishCard[1].setVisible(true);
             }
             page.time[page.turn].setVisible(true);
-            page.t = new Time(page, this, true, false);
+            page.t = new Time(page, this, true, event.getTurn() == event.getIndex());
             page.t.start();
         } else if (event.getType().equals("出牌")) {
             page.t.isRun = false;
@@ -128,27 +137,24 @@ public class MyWebSocketClient extends WebSocketClient {
             page.turn = turn;
             page.mine = mineIndex;
             page.showIndex = showIndex;
-            page.shows[showIndex].clear();
-            List<Card> showsCards = event.getShows();
-            page.shows[turn].clear();
             page.time[turn].setVisible(true);
             page.time[(turn + 2) % 3].setVisible(false);
             if (mineIndex == turn) {
+                logger.debug("出牌,展示出牌按钮......");
                 //轮到自己出牌，展示出牌按钮
                 page.publishCard[0].setVisible(true);
                 page.publishCard[1].setVisible(true);
             }
             if (play) {
-                page.lastShowIndex = showIndex;
-                page.shows[page.lastShowIndex].clear();
+                page.shows[playIndex].clear();
                 logger.debug("不是自己出牌，需要更新界面展示");
                 //移除牌 到展示牌的集合
                 for (int i = 0; i < event.getShows().size(); i++) {
-                    page.players[showIndex].get(i).setCard(event.getShows().get(i));
-                    page.shows[showIndex].add(page.players[showIndex].get(i));
+                    page.players[playIndex].get(i).setCard(event.getShows().get(i));
+                    page.shows[playIndex].add(page.players[playIndex].get(i));
                 }
                 //模拟一出牌面
-                page.players[showIndex].removeAll(page.shows[showIndex]);
+                page.players[playIndex].removeAll(page.shows[playIndex]);
                 // 出牌展示到界面上
                 Point point = new Point();
                 if (showIndex == 0) {
@@ -157,20 +163,21 @@ public class MyWebSocketClient extends WebSocketClient {
                     point.x = 600;
                 }
                 // 屏幕中部
-                point.y = (400 / 2) - (page.shows[page.showIndex].size() + 1) * 15 / 2;
-                for (JCard card : page.shows[page.showIndex]) {
+                point.y = (400 / 2) - (page.shows[playIndex].size() + 1) * 15 / 2;
+                for (JCard card : page.shows[playIndex]) {
                     card.turnFront();
                     Common.move(card, card.getLocation(), point);
                     point.y += 15;
                 }
-                Common.order(page.players[page.turn]);
-                Common.rePosition(page, page.players[page.showIndex], page.showIndex);
+                Common.order(page.players[playIndex]);
+                Common.rePosition(page, page.players[playIndex], playIndex);
             } else {
                 page.time[playIndex].setVisible(true);
                 page.time[playIndex].setText("不要");
             }
+            page.shows[(turn + 1) % 3].clear();
             // 轮到输出牌，界面模拟倒计时
-            page.t = new Time(page, this, true, false);
+            page.t = new Time(page, this, true, event.getTurn() == event.getIndex());
             page.t.start();
         }
 
